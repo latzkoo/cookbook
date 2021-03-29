@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.latzkoo.cookbook.controller.MaterialFormController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane prefHeight="0.0" prefWidth="580.0" style="-fx-padding: 0 0 10 0;">
+               <left>
+                  <Label text="Új hozzáadása" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </left>
+            </BorderPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Megnevezés" />
+                  <Label GridPane.rowIndex="3" />
+                  <Label text="Hivatalos mértékegység" GridPane.rowIndex="2" />
+                  <Label text="Minimális mennyiség" GridPane.rowIndex="4" />
+                  <TextField fx:id="name" GridPane.columnIndex="1" />
+                  <TextField fx:id="officialMeasureUnit" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="minStock" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10 0 0 0;" GridPane.rowIndex="5">
+                     <children>
+                        <Button mnemonicParsing="false" text="Hozzáadás">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin></Button>
+                        <Button mnemonicParsing="false" text="Mégsem" />
+                     </children>
+                  </HBox>
+                  <ComboBox fx:id="measures" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Mértékegység" GridPane.rowIndex="1" />
+                  <Label text="Érték" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="officialMeasures" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

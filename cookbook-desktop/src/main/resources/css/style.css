@@ -1,0 +1,16 @@
+.btn-new {
+    -fx-background-color: #007bff;
+    -fx-text-fill: #fff;
+}
+.btn-new:hover {
+    -fx-background-color: #1085ff;
+    -fx-text-fill: #fff;
+}
+.btn-new:pressed {
+    -fx-background-color: #0061d0;
+}
+
+.btn-operation {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 5px;
+}

@@ -1,0 +1,14 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+cookbook-core/log/
+cookbook-core/target/
+cookbook-desktop/log/
+cookbook-desktop/target/
+cookbook-core/src/main/resources/application.properties
