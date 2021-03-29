@@ -48,8 +48,8 @@
             <TableView fx:id="materialTable" prefHeight="373.0" prefWidth="580.0">
               <columns>
                 <TableColumn fx:id="id" prefWidth="50" text="ID" resizable="false" />
-                <TableColumn fx:id="measure" prefWidth="120" text="Mértékegység" resizable="false" />
                 <TableColumn fx:id="name" prefWidth="202" text="Megnevezés" resizable="false" />
+                <TableColumn fx:id="measure" prefWidth="120" text="Mértékegység" resizable="false" />
                 <TableColumn fx:id="minStock" prefWidth="120" text="Minimális készlet" resizable="false" />
                 <TableColumn fx:id="operations" prefWidth="70" text="Műveletek" resizable="false" sortable="false" />
               </columns>

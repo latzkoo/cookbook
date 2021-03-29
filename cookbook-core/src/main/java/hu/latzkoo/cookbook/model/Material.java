@@ -7,11 +7,11 @@ public class Material {
     private IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private IntegerProperty measureId = new SimpleIntegerProperty(this, "measureId");
     private StringProperty name = new SimpleStringProperty(this, "name");
-//    private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
+    private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
     private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
     private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
     private IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
-//    private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
+    private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
 //    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(this, "date");
 
     public int getId() {
@@ -50,6 +50,18 @@ public class Material {
         this.name.set(name);
     }
 
+    public Measure getMeasure() {
+        return measure.get();
+    }
+
+    public ObjectProperty<Measure> measureProperty() {
+        return measure;
+    }
+
+    public void setMeasure(Measure measure) {
+        this.measure.set(measure);
+    }
+
     public int getMinStock() {
         return minStock.get();
     }
@@ -85,4 +97,17 @@ public class Material {
     public void setOfficialMeasureUnit(int officialMeasureUnit) {
         this.officialMeasureUnit.set(officialMeasureUnit);
     }
+
+    public Measure getOfficialMeasure() {
+        return officialMeasure.get();
+    }
+
+    public ObjectProperty<Measure> officialMeasureProperty() {
+        return officialMeasure;
+    }
+
+    public void setOfficialMeasure(Measure officialMeasure) {
+        this.officialMeasure.set(officialMeasure);
+    }
+
 }

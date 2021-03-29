@@ -10,6 +10,7 @@ import java.util.List;
 public class MaterialDAOImpl implements MaterialDAO {
 
     private final String connectionURL;
+    private final MeasureDAO measureDAO = new MeasureDAOImpl();
 
     public MaterialDAOImpl() {
         connectionURL = Config.getValue("database.url");
@@ -32,6 +33,8 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
                 material.setMinStock(result.getInt("minStock"));
 
+                material.setMeasure(measureDAO.getById(material.getMeasureId()));
+
                 materials.add(material);
             }
         }
@@ -48,15 +51,22 @@ public class MaterialDAOImpl implements MaterialDAO {
             PreparedStatement statement;
 
             if (material.getId() <= 0) {
-                statement = conn.prepareStatement("INSERT INTO material (measureType, name) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+                statement = conn.prepareStatement("INSERT INTO material " +
+                        "(measureId, name, officialMeasureUnit, officialMeasureId, minStock)" +
+                        "VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             }
             else {
-                statement = conn.prepareStatement("UPDATE material SET measureType=?, name=? WHERE id=?");
-                statement.setInt(3, material.getId());
+                statement = conn.prepareStatement("UPDATE material SET " +
+                        "measureId=?, name=?, officialMeasureUnit=?, " +
+                        "officialMeasureId=?, minStock=? WHERE id=?");
+                statement.setInt(6, material.getId());
             }
 
             statement.setInt(1, material.getMeasureId());
             statement.setString(2, material.getName());
+            statement.setInt(3, material.getOfficialMeasureUnit());
+            statement.setInt(4, material.getOfficialMeasureId());
+            statement.setInt(5, material.getMinStock());
 
             int affectedRows = statement.executeUpdate();
 

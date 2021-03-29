@@ -6,6 +6,7 @@ import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,11 +54,7 @@ public class MainController implements Initializable {
         setTableData();
 
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        measure.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Measure, String>, ObservableValue<String>>() {
-//            public ObservableValue<String> call(TableColumn.CellDataFeatures<Measure, String> p) {
-//                return p.getValue().nameProperty();
-//            }
-//        });
+        measure.setCellValueFactory(new PropertyValueFactory<>("measure"));
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         minStock.setCellValueFactory(new PropertyValueFactory<>("minStock"));
@@ -138,11 +136,9 @@ public class MainController implements Initializable {
             stage.setScene(scene);
 
             Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-            System.out.println();
-            System.out.println(scene.getWidth());
 
-            stage.setX(bounds.getWidth() / 2 - 270);
-            stage.setY(bounds.getHeight() / 2 - 170);
+            stage.setX(bounds.getWidth() / 2 - 330);
+            stage.setY(bounds.getHeight() / 2 - 230);
 
             scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
             stage.show();

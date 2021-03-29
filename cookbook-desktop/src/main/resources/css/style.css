@@ -13,4 +13,5 @@
 .btn-operation {
     -fx-background-color: transparent;
     -fx-padding: 0 0 0 5px;
+    -fx-cursor: hand;
 }
