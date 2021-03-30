@@ -6,7 +6,7 @@ import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,9 +32,6 @@ public class MainController implements Initializable {
 
     @FXML
     private TableView<Material> materialTable;
-
-    @FXML
-    private TableColumn<Material, String> id;
 
     @FXML
     private TableColumn<Measure, String> measure;
@@ -53,7 +49,6 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTableData();
 
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
         measure.setCellValueFactory(new PropertyValueFactory<>("measure"));
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -104,7 +99,7 @@ public class MainController implements Initializable {
         Platform.exit();
     }
 
-    private void setTableData() {
+    public void setTableData() {
         materialTable.getItems().setAll(materialDAO.findAll());
     }
 
@@ -122,15 +117,24 @@ public class MainController implements Initializable {
 
     @FXML
     private void edit(Material material) {
+        showMaterialForm(material);
+    }
+
+    @FXML
+    private void onAdd(ActionEvent event) {
+        showMaterialForm(new Material());
+    }
+
+    private void showMaterialForm(Material material) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/form.fxml"));
 
         try {
             Parent root = loader.load();
+            Stage stage = new Stage();
 
             MaterialFormController controller = loader.getController();
-            controller.setMaterial(material);
+            controller.initForm(this, stage, material);
 
-            Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root, 600, 400);
             stage.setScene(scene);
@@ -141,7 +145,7 @@ public class MainController implements Initializable {
             stage.setY(bounds.getHeight() / 2 - 230);
 
             scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
-            stage.show();
+            stage.showAndWait();
         }
         catch (IOException e) {
             e.printStackTrace();

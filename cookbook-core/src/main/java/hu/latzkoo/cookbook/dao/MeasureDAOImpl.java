@@ -6,7 +6,6 @@ import hu.latzkoo.cookbook.model.Measure;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MeasureDAOImpl implements MeasureDAO {
 
@@ -29,11 +28,6 @@ public class MeasureDAOImpl implements MeasureDAO {
                 measure.setId(result.getInt("id"));
                 measure.setMeasureType(result.getInt("measureType"));
                 measure.setName(result.getString("name"));
-//
-//                int measureTypeId = result.getInt("measureType");
-//                Optional<Integer> measureType = Arrays.stream(MeasureType.values())
-//                        .filter(mt -> mt == measureTypeId).findAny();
-//                measure.setType(measureType.orElse(1));
 
                 measures.add(measure);
             }

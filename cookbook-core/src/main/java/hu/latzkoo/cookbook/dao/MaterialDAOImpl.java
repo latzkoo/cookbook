@@ -34,6 +34,7 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material.setMinStock(result.getInt("minStock"));
 
                 material.setMeasure(measureDAO.getById(material.getMeasureId()));
+                material.setOfficialMeasure(measureDAO.getById(material.getOfficialMeasureId()));
 
                 materials.add(material);
             }
@@ -62,11 +63,25 @@ public class MaterialDAOImpl implements MaterialDAO {
                 statement.setInt(6, material.getId());
             }
 
-            statement.setInt(1, material.getMeasureId());
+            statement.setInt(1, material.getMeasure().getId());
             statement.setString(2, material.getName());
-            statement.setInt(3, material.getOfficialMeasureUnit());
-            statement.setInt(4, material.getOfficialMeasureId());
+
+            if (material.getOfficialMeasureUnit() != 0) {
+                statement.setInt(3, material.getOfficialMeasureUnit());
+            }
+            else {
+                statement.setNull(3, java.sql.Types.INTEGER);
+            }
+
+            if (material.getOfficialMeasure() != null) {
+                statement.setInt(4, material.getOfficialMeasure().getId());
+            }
+            else {
+                statement.setNull(4, java.sql.Types.INTEGER);
+            }
+
             statement.setInt(5, material.getMinStock());
+
 
             int affectedRows = statement.executeUpdate();
 

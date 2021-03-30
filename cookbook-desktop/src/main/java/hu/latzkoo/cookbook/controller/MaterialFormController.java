@@ -9,12 +9,9 @@ import hu.latzkoo.cookbook.model.Measure;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
@@ -23,12 +20,11 @@ import java.util.stream.Collectors;
 
 public class MaterialFormController {
 
+    private Stage stage;
     private Material material;
-    private MaterialDAO materialDAO = new MaterialDAOImpl();
+    private MainController parent;
+    private final MaterialDAO materialDAO = new MaterialDAOImpl();
     private final MeasureDAO measureDAO = new MeasureDAOImpl();
-
-    @FXML
-    private BorderPane materialForm;
 
     @FXML
     private TextField name;
@@ -45,38 +41,61 @@ public class MaterialFormController {
     @FXML
     private TextField minStock;
 
-    public void setMaterial(Material material) {
+    @FXML
+    private Button btnSave;
+
+    public void initForm(MainController parent, Stage stage, Material material) {
+        this.parent = parent;
+        this.stage = stage;
         this.material = material;
         List<Measure> measureList = measureDAO.get();
 
-        name.textProperty().bindBidirectional(material.nameProperty());
+        name.textProperty().setValue(material.nameProperty().getValue());
+        measures.valueProperty().bindBidirectional(material.measureProperty());
         measures.setItems(FXCollections.observableArrayList(measureList));
 
-        Measure measure = measureDAO.getById(material.getMeasureId());
-        measures.getSelectionModel().select(measure);
+        if (material.getMeasureId() > 0) {
+            Measure measure = material.getMeasure();
+            measures.getSelectionModel().select(measure);
 
-        // TODO: Ezt a filtert ki kellene innen szervezni valahova
-        List<Measure> officialMeasuresList = measureList.stream()
+            // Set additional fields status
+            changeAdditionalFieldsStatus(measure.getMeasureType());
+        }
+
+        officialMeasures.valueProperty().bindBidirectional(material.officialMeasureProperty());
+        officialMeasures.setItems(FXCollections.observableArrayList(
+                measureList.stream()
                 .filter(m -> m.getMeasureType() == 1)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())));
 
-        officialMeasures.setItems(FXCollections.observableArrayList(officialMeasuresList));
-        Measure officialMeasure = measureDAO.getById(material.getOfficialMeasureId());
-        officialMeasures.getSelectionModel().select(officialMeasure);
+        if (material.getOfficialMeasureId() > 0) {
+            Measure officialMeasure = material.getOfficialMeasure();
+            officialMeasures.getSelectionModel().select(officialMeasure);
+        }
 
-        // Set additional fields status
-        changeAdditionalFieldsStatus(measure.getMeasureType());
-
-        // Select measure
+        // Measure change event
         measures.setOnAction(event -> {
             Measure selectedMeasure = measures.getSelectionModel().getSelectedItem();
             changeAdditionalFieldsStatus(selectedMeasure.getMeasureType());
         });
 
-        minStock.textProperty().bindBidirectional(
-                material.minStockProperty(), new NumberStringConverter());
         officialMeasureUnit.textProperty().bindBidirectional(
                 material.officialMeasureUnitProperty(), new NumberStringConverter());
+
+        if (material.getOfficialMeasureUnit() == 0) {
+            officialMeasureUnit.setText(null);
+        }
+
+        minStock.textProperty().bindBidirectional(
+                material.minStockProperty(), new NumberStringConverter());
+
+        if (material.getMinStock() == 0) {
+            minStock.setText(null);
+        }
+
+        btnSave.disableProperty().bind(name.textProperty().isEmpty()
+                .or(measures.valueProperty().isNull()
+                .or(minStock.textProperty().isEmpty())));
     }
 
     private void changeAdditionalFieldsStatus(int measureType) {
@@ -112,23 +131,23 @@ public class MaterialFormController {
         }
     }
 
-    private void closeModal() {
-        Stage stage = (Stage) materialForm.getScene().getWindow();
-        stage.close();
-    }
-
     private void save() {
+        material.setName(name.getText());
+
         Measure measure = measures.getSelectionModel().getSelectedItem();
-        material.setMeasureId(measure.getId());
+        material.setMeasure(measure);
 
         Measure officialMeasure = officialMeasures.getSelectionModel().getSelectedItem();
-
-        if (officialMeasure != null) {
-            material.setOfficialMeasureId(officialMeasure.getId());
-        }
+        material.setOfficialMeasure(officialMeasure);
+        material.setMinStock(Integer.parseInt(minStock.getText()));
 
         material = materialDAO.save(material);
 
+        parent.setTableData();
         closeModal();
+    }
+
+    private void closeModal() {
+        stage.close();
     }
 }

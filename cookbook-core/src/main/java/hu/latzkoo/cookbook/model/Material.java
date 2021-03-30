@@ -8,9 +8,9 @@ public class Material {
     private IntegerProperty measureId = new SimpleIntegerProperty(this, "measureId");
     private StringProperty name = new SimpleStringProperty(this, "name");
     private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
-    private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
-    private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
     private IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
+    private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
+    private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
     private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
 //    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(this, "date");
 
