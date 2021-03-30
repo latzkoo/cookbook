@@ -60,11 +60,11 @@
                   <TextField fx:id="minStock" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10 0 0 0;" GridPane.rowIndex="4">
                        <children>
-                           <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSave" text="Mentés">
+                           <Button fx:id="btnSave" styleClass="btn-primary" mnemonicParsing="false" onAction="#onSave" text="Mentés">
                                <HBox.margin>
                                    <Insets right="10.0" />
                                </HBox.margin></Button>
-                           <Button mnemonicParsing="false" onAction="#onCancel" text="Mégsem" />
+                           <Button styleClass="btn-light" mnemonicParsing="false" onAction="#onCancel" text="Mégsem" />
                        </children>
                   </HBox>
                </children>

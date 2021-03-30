@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MaterialFormController {
@@ -44,7 +45,7 @@ public class MaterialFormController {
     @FXML
     private Button btnSave;
 
-    public void initForm(MainController parent, Stage stage, Material material) {
+    public void init(MainController parent, Stage stage, Material material) {
         this.parent = parent;
         this.stage = stage;
         this.material = material;
@@ -87,7 +88,7 @@ public class MaterialFormController {
         }
 
         minStock.textProperty().bindBidirectional(
-                material.minStockProperty(), new NumberStringConverter());
+                material.minStockProperty(), new NumberStringConverter(Locale.ENGLISH));
 
         if (material.getMinStock() == 0) {
             minStock.setText(null);
@@ -139,10 +140,11 @@ public class MaterialFormController {
 
         Measure officialMeasure = officialMeasures.getSelectionModel().getSelectedItem();
         material.setOfficialMeasure(officialMeasure);
-        material.setMinStock(Integer.parseInt(minStock.getText()));
+        material.setMinStock(Double.parseDouble(minStock.getText()));
 
         material = materialDAO.save(material);
 
+        parent.setMaterials(materialDAO.get(false));
         parent.setTableData();
         closeModal();
     }

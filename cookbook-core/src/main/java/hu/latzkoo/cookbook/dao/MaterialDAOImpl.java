@@ -17,12 +17,13 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public List<Material> findAll() {
+    public List<Material> get(boolean outOfStock) {
         List<Material> materials = new ArrayList<>();
 
         try(Connection conn = DriverManager.getConnection(connectionURL)) {
             Statement statement = conn.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM material");
+            ResultSet result = statement.executeQuery("SELECT * FROM material" +
+                    (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY id");
 
             while(result.next()) {
                 Material material = new Material();
@@ -31,7 +32,8 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material.setName(result.getString("name"));
                 material.setOfficialMeasureId(result.getInt("officialMeasureId"));
                 material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
-                material.setMinStock(result.getInt("minStock"));
+                material.setMinStock(result.getDouble("minStock"));
+                material.setStock(result.getDouble("stock"));
 
                 material.setMeasure(measureDAO.getById(material.getMeasureId()));
                 material.setOfficialMeasure(measureDAO.getById(material.getOfficialMeasureId()));
@@ -80,7 +82,7 @@ public class MaterialDAOImpl implements MaterialDAO {
                 statement.setNull(4, java.sql.Types.INTEGER);
             }
 
-            statement.setInt(5, material.getMinStock());
+            statement.setDouble(5, material.getMinStock());
 
 
             int affectedRows = statement.executeUpdate();

@@ -10,7 +10,8 @@ public class Material {
     private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
     private IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
     private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
-    private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
+    private DoubleProperty minStock = new SimpleDoubleProperty(this, "minStock");
+    private DoubleProperty stock = new SimpleDoubleProperty(this, "stock");
     private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
 //    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(this, "date");
 
@@ -62,16 +63,16 @@ public class Material {
         this.measure.set(measure);
     }
 
-    public int getMinStock() {
-        return minStock.get();
+    public int getOfficialMeasureUnit() {
+        return officialMeasureUnit.get();
     }
 
-    public IntegerProperty minStockProperty() {
-        return minStock;
+    public IntegerProperty officialMeasureUnitProperty() {
+        return officialMeasureUnit;
     }
 
-    public void setMinStock(int minStock) {
-        this.minStock.set(minStock);
+    public void setOfficialMeasureUnit(int officialMeasureUnit) {
+        this.officialMeasureUnit.set(officialMeasureUnit);
     }
 
     public int getOfficialMeasureId() {
@@ -86,16 +87,28 @@ public class Material {
         this.officialMeasureId.set(officialMeasureId);
     }
 
-    public int getOfficialMeasureUnit() {
-        return officialMeasureUnit.get();
+    public double getMinStock() {
+        return minStock.get();
     }
 
-    public IntegerProperty officialMeasureUnitProperty() {
-        return officialMeasureUnit;
+    public DoubleProperty minStockProperty() {
+        return minStock;
     }
 
-    public void setOfficialMeasureUnit(int officialMeasureUnit) {
-        this.officialMeasureUnit.set(officialMeasureUnit);
+    public void setMinStock(double minStock) {
+        this.minStock.set(minStock);
+    }
+
+    public double getStock() {
+        return stock.get();
+    }
+
+    public DoubleProperty stockProperty() {
+        return stock;
+    }
+
+    public void setStock(double stock) {
+        this.stock.set(stock);
     }
 
     public Measure getOfficialMeasure() {

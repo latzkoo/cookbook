@@ -6,7 +6,6 @@ import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,17 +17,23 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
-    MaterialDAO materialDAO = new MaterialDAOImpl();
+    private final MaterialDAO materialDAO = new MaterialDAOImpl();
+    private List<Material> materials;
 
     @FXML
     private TableView<Material> materialTable;
@@ -45,8 +50,25 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Material, Void> operations;
 
+    @FXML
+    private TextField search;
+
+    @FXML
+    private VBox alertWrapper;
+
+    @FXML
+    private TextFlow alert;
+
+    @FXML
+    private Text alertMessage;
+
+    public void setMaterials(List<Material> materials) {
+        this.materials = materials;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        materials = materialDAO.get(false);
         setTableData();
 
         measure.setCellValueFactory(new PropertyValueFactory<>("measure"));
@@ -92,6 +114,16 @@ public class MainController implements Initializable {
                 }
             }
         });
+
+        // Stock alert message
+        int materialBelowMinStock = isMaterialBelowMinStock();
+
+        if (materialBelowMinStock > 0) {
+            alertMessage.setText(materialBelowMinStock + " alapanyag mennyisége a minimális szint alatt.");
+        }
+        else {
+            alertWrapper.getChildren().removeAll(alert);
+        }
     }
 
     @FXML
@@ -100,7 +132,7 @@ public class MainController implements Initializable {
     }
 
     public void setTableData() {
-        materialTable.getItems().setAll(materialDAO.findAll());
+        materialTable.getItems().setAll(materials);
     }
 
     private void delete(Material material) {
@@ -121,19 +153,24 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void onAdd(ActionEvent event) {
+    private void add() {
         showMaterialForm(new Material());
     }
 
+    @FXML
+    private void showList() {
+        showMaterialList();
+    }
+
     private void showMaterialForm(Material material) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/form.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/material_form.fxml"));
 
         try {
             Parent root = loader.load();
             Stage stage = new Stage();
 
             MaterialFormController controller = loader.getController();
-            controller.initForm(this, stage, material);
+            controller.init(this, stage, material);
 
             stage.initModality(Modality.APPLICATION_MODAL);
             Scene scene = new Scene(root, 600, 400);
@@ -150,6 +187,53 @@ public class MainController implements Initializable {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showMaterialList() {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/material_list.fxml"));
+
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+
+            MaterialListController controller = loader.getController();
+            controller.init(stage);
+
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root, 600, 400);
+            stage.setScene(scene);
+
+            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+
+            stage.setX(bounds.getWidth() / 2 - 330);
+            stage.setY(bounds.getHeight() / 2 - 230);
+
+            scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
+            stage.showAndWait();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onSearch() {
+        List<Material> filtered = materials.stream().filter(material -> material.getName().toLowerCase()
+                .contains(search.getText().toLowerCase()))
+                .collect(Collectors.toList());
+
+        materialTable.getItems().setAll(filtered);
+    }
+
+    private int isMaterialBelowMinStock() {
+        int count = 0;
+
+        for(Material material : materials) {
+            if (material.getStock() < material.getMinStock()) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
 }

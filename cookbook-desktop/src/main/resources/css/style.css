@@ -1,17 +1,48 @@
-.btn-new {
+.btn-primary {
     -fx-background-color: #007bff;
     -fx-text-fill: #fff;
+    -fx-padding: 5 15;
 }
-.btn-new:hover {
+.btn-primary:hover {
     -fx-background-color: #1085ff;
     -fx-text-fill: #fff;
 }
-.btn-new:pressed {
+.btn-primary:pressed {
     -fx-background-color: #0061d0;
+}
+
+.btn-light {
+    -fx-background-color: #fff;
+    -fx-border-color: #b5b5b5;
+    -fx-border-radius: 3;
+    -fx-text-fill: #393939;
+    -fx-padding: 5 15;
+}
+.btn-light:hover {
+    -fx-background-color: #fff;
+}
+.btn-light:pressed {
+    -fx-background-color: #f1f1f1;
 }
 
 .btn-operation {
     -fx-background-color: transparent;
     -fx-padding: 0 0 0 5px;
     -fx-cursor: hand;
+}
+.alert-wrapper {
+}
+.alert {
+    -fx-padding: 5 10;
+    -fx-background-color: #cb002f;
+    -fx-cursor: hand;
+}
+.alert:hover {
+    -fx-background-color: #d2002e;
+}
+.list-content {
+    -fx-padding: 10;
+}
+.table-placeholder {
+    -fx-fill: #808080;
 }
