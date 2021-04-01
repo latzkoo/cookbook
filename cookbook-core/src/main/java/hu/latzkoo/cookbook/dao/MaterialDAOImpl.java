@@ -20,7 +20,9 @@ public class MaterialDAOImpl implements MaterialDAO {
     public List<Material> get(boolean outOfStock) {
         List<Material> materials = new ArrayList<>();
 
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM material" +
                     (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY id");
@@ -40,8 +42,10 @@ public class MaterialDAOImpl implements MaterialDAO {
 
                 materials.add(material);
             }
+
+            statement.close();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -50,15 +54,16 @@ public class MaterialDAOImpl implements MaterialDAO {
 
     @Override
     public Material save(Material material) {
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement;
 
             if (material.getId() <= 0) {
                 statement = conn.prepareStatement("INSERT INTO material " +
                         "(measureId, name, officialMeasureUnit, officialMeasureId, minStock)" +
                         "VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            }
-            else {
+            } else {
                 statement = conn.prepareStatement("UPDATE material SET " +
                         "measureId=?, name=?, officialMeasureUnit=?, " +
                         "officialMeasureId=?, minStock=? WHERE id=?");
@@ -99,22 +104,26 @@ public class MaterialDAOImpl implements MaterialDAO {
 
             return material;
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return null;
     }
 
     @Override
     public void delete(Material material) {
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement = conn.prepareStatement("DELETE FROM material WHERE id=?");
 
             statement.setInt(1, material.getId());
             statement.executeUpdate();
+
             statement.close();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

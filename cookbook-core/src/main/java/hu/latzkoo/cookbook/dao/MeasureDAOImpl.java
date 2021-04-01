@@ -19,7 +19,9 @@ public class MeasureDAOImpl implements MeasureDAO {
     public List<Measure> get() {
         List<Measure> measures = new ArrayList<>();
 
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM measure");
 
@@ -31,8 +33,10 @@ public class MeasureDAOImpl implements MeasureDAO {
 
                 measures.add(measure);
             }
+
+            statement.close();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -41,7 +45,9 @@ public class MeasureDAOImpl implements MeasureDAO {
 
     @Override
     public Measure getById(int id) {
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM measure WHERE id=?");
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
@@ -56,8 +62,10 @@ public class MeasureDAOImpl implements MeasureDAO {
 
                 return measure;
             }
+
+            statement.close();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -66,7 +74,9 @@ public class MeasureDAOImpl implements MeasureDAO {
 
     @Override
     public Measure save(Measure measure) {
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement;
 
             if (measure.getId() <= 0) {
@@ -91,25 +101,27 @@ public class MeasureDAOImpl implements MeasureDAO {
             }
 
             statement.close();
-
-            return measure;
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return null;
     }
 
     @Override
     public void delete(Measure measure) {
-        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement = conn.prepareStatement("DELETE FROM measure WHERE id=?");
 
             statement.setInt(1, measure.getId());
             statement.executeUpdate();
+
             statement.close();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

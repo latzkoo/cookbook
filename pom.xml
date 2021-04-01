@@ -11,6 +11,7 @@
     <modules>
         <module>cookbook-core</module>
         <module>cookbook-desktop</module>
+        <module>cookbook-web</module>
     </modules>
 
     <properties>
