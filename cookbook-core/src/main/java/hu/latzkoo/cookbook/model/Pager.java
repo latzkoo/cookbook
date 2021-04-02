@@ -3,7 +3,7 @@ package hu.latzkoo.cookbook.model;
 public class Pager {
 
     private int from = 0;
-    private int items = 2;
+    private int items = 15;
     private int pages = 1;
 
     public Pager(int currentPage, int count) {

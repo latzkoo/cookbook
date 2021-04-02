@@ -12,5 +12,6 @@ public interface RecipeDAO {
     Recipe findById(int id);
     Recipe save(Recipe recipe);
     void delete(Recipe recipe);
+    void delete(int id);
 
 }

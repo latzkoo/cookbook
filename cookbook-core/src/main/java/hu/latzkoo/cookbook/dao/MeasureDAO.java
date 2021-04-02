@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface MeasureDAO {
 
-    List<Measure> get();
-    Measure getById(int id);
+    List<Measure> findAll();
+    Measure findById(int id);
     Measure save(Measure measure);
     void delete(Measure measure);
 

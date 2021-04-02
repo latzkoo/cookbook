@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface MaterialDAO {
 
-    List<Material> get(boolean outOfStock);
+    List<Material> findAll(boolean outOfStock);
+    Material findById(int id);
     Material save(Material material);
     void delete(Material material);
 

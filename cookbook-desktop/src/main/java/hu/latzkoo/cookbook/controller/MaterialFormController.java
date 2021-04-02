@@ -6,6 +6,7 @@ import hu.latzkoo.cookbook.dao.MeasureDAO;
 import hu.latzkoo.cookbook.dao.MeasureDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
+import hu.latzkoo.cookbook.model.TypeConverter;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.converter.NumberStringConverter;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class MaterialFormController {
@@ -49,7 +48,7 @@ public class MaterialFormController {
         this.parent = parent;
         this.stage = stage;
         this.material = material;
-        List<Measure> measureList = measureDAO.get();
+        List<Measure> measureList = measureDAO.findAll();
 
         name.textProperty().setValue(material.nameProperty().getValue());
         measures.valueProperty().bindBidirectional(material.measureProperty());
@@ -81,14 +80,13 @@ public class MaterialFormController {
         });
 
         officialMeasureUnit.textProperty().bindBidirectional(
-                material.officialMeasureUnitProperty(), new NumberStringConverter());
+                material.officialMeasureUnitProperty(), new TypeConverter());
 
         if (material.getOfficialMeasureUnit() == 0) {
             officialMeasureUnit.setText(null);
         }
 
-        minStock.textProperty().bindBidirectional(
-                material.minStockProperty(), new NumberStringConverter(Locale.ENGLISH));
+        minStock.textProperty().bindBidirectional(material.minStockProperty(), new TypeConverter());
 
         if (material.getMinStock() == 0) {
             minStock.setText(null);
@@ -140,12 +138,13 @@ public class MaterialFormController {
 
         Measure officialMeasure = officialMeasures.getSelectionModel().getSelectedItem();
         material.setOfficialMeasure(officialMeasure);
-        material.setMinStock(Double.parseDouble(minStock.getText()));
+        material.setMinStock(Integer.parseInt(minStock.getText()));
 
         material = materialDAO.save(material);
 
-        parent.setMaterials(materialDAO.get(false));
+        parent.setMaterials(materialDAO.findAll(false));
         parent.setTableData();
+        parent.setMaterialAlertMessage();
         closeModal();
     }
 

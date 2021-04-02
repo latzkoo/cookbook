@@ -68,7 +68,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        materials = materialDAO.get(false);
+        materials = materialDAO.findAll(false);
         setTableData();
 
         measure.setCellValueFactory(new PropertyValueFactory<>("measure"));
@@ -116,6 +116,10 @@ public class MainController implements Initializable {
         });
 
         // Stock alert message
+        setMaterialAlertMessage();
+    }
+
+    public void setMaterialAlertMessage() {
         int materialBelowMinStock = isMaterialBelowMinStock();
 
         if (materialBelowMinStock > 0) {
@@ -142,7 +146,9 @@ public class MainController implements Initializable {
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.equals(ButtonType.YES)) {
                 materialDAO.delete(material);
+                setMaterials(materialDAO.findAll(false));
                 setTableData();
+                setMaterialAlertMessage();
             }
         });
     }

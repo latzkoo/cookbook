@@ -10,10 +10,17 @@ public class Material {
     private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
     private IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
     private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
-    private DoubleProperty minStock = new SimpleDoubleProperty(this, "minStock");
-    private DoubleProperty stock = new SimpleDoubleProperty(this, "stock");
+    private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
+    private IntegerProperty stock = new SimpleIntegerProperty(this, "stock");
     private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
 //    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(this, "date");
+
+    public Material() {
+    }
+
+    public Material(int id) {
+        setId(id);
+    }
 
     public int getId() {
         return id.get();
@@ -87,27 +94,27 @@ public class Material {
         this.officialMeasureId.set(officialMeasureId);
     }
 
-    public double getMinStock() {
+    public int getMinStock() {
         return minStock.get();
     }
 
-    public DoubleProperty minStockProperty() {
+    public IntegerProperty minStockProperty() {
         return minStock;
     }
 
-    public void setMinStock(double minStock) {
+    public void setMinStock(int minStock) {
         this.minStock.set(minStock);
     }
 
-    public double getStock() {
+    public int getStock() {
         return stock.get();
     }
 
-    public DoubleProperty stockProperty() {
+    public IntegerProperty stockProperty() {
         return stock;
     }
 
-    public void setStock(double stock) {
+    public void setStock(int stock) {
         this.stock.set(stock);
     }
 
@@ -122,5 +129,4 @@ public class Material {
     public void setOfficialMeasure(Measure officialMeasure) {
         this.officialMeasure.set(officialMeasure);
     }
-
 }

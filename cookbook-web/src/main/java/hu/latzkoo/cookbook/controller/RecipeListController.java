@@ -4,13 +4,12 @@ import hu.latzkoo.cookbook.dao.RecipeDAO;
 import hu.latzkoo.cookbook.dao.RecipeDAOImpl;
 import hu.latzkoo.cookbook.model.Pager;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/recipes", ""})
+@WebServlet(urlPatterns = {"/recipes", "/recipes/", ""})
 public class RecipeListController extends HttpServlet {
 
     @Override
@@ -25,6 +24,6 @@ public class RecipeListController extends HttpServlet {
         request.setAttribute("pager", pager);
         request.setAttribute("recipes", recipeDAO.findAll(request.getParameter("q"), pager));
 
-        request.getRequestDispatcher("recipe.jsp").forward(request, response);
+        request.getRequestDispatcher("/layouts/recipes/list.jsp").forward(request, response);
     }
 }

@@ -12,6 +12,8 @@ public class RecipeDAOImpl implements RecipeDAO {
 
     private final String connectionURL;
     private final RecipeCategoryDAO recipeCategoryDAO = new RecipeCategoryDAOImpl();
+    private final RecipeLevelDAO recipeLevelDAO = new RecipeLevelDAOImpl();
+    private final RecipeMaterialDAO recipeMaterialDAO = new RecipeMaterialDAOImpl();
 
     public RecipeDAOImpl() {
         connectionURL = Config.getValue("database.url");
@@ -63,7 +65,7 @@ public class RecipeDAOImpl implements RecipeDAO {
             int idx = 1;
 
             String query = "SELECT r.id, r.name, r.createdAt, " +
-                    "(SELECT count(rm.materialId) FROM recipe_materials AS rm WHERE recipeId=r.id) AS materials " +
+                    "(SELECT count(rm.materialId) FROM recipe_material AS rm WHERE recipeId=r.id) AS materials " +
                     "FROM recipe AS r";
 
             if (q != null) {
@@ -111,7 +113,7 @@ public class RecipeDAOImpl implements RecipeDAO {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM recipe_category WHERE id=?");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM recipe WHERE id=?");
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
@@ -122,13 +124,15 @@ public class RecipeDAOImpl implements RecipeDAO {
                 recipe.setName(result.getString("name"));
                 recipe.setCustomName(result.getString("customName"));
                 recipe.setDescription(result.getString("description"));
-                recipe.setLevel(result.getInt("level"));
-                recipe.setDuration(result.getInt("level"));
+                recipe.setLevelId(result.getInt("levelId"));
+                recipe.setDuration(result.getInt("duration"));
                 recipe.setNumberOfPersons(result.getInt("numberOfPersons"));
                 recipe.setImage(result.getString("image"));
                 recipe.setCreatedAt(result.getString("createdAt"));
 
                 recipe.setRecipeCategory(recipeCategoryDAO.findById(recipe.getCategoryId()));
+                recipe.setRecipeLevel(recipeLevelDAO.findById(recipe.getLevelId()));
+                recipe.setMaterials(recipeMaterialDAO.findAll(recipe.getId()));
 
                 statement.close();
 
@@ -151,26 +155,42 @@ public class RecipeDAOImpl implements RecipeDAO {
 
             if (recipe.getId() <= 0) {
                 statement = conn.prepareStatement("INSERT INTO recipe " +
-                        "(categoryId, name, customName, description, level, duration, numberOfPersons, image, createdAt)" +
+                        "(categoryId, name, customName, description, levelId," +
+                        " duration, numberOfPersons, createdAt, image)" +
                         "VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             }
             else {
-                statement = conn.prepareStatement("UPDATE recipe SET " +
+                String query = "UPDATE recipe SET " +
                         "categoryId=?, name=?, customName=?, " +
-                        "description=?, level=?, duration=?, numberOfPersons=?, " +
-                        "image=?, createdAt=? WHERE id=?");
-                statement.setInt(10, recipe.getId());
+                        "description=?, levelId=?, duration=?, numberOfPersons=?, " +
+                        "createdAt=?";
+
+                if (recipe.getImage() != null) query += ", image=?";
+
+                query += " WHERE id=?";
+
+                statement = conn.prepareStatement(query);
+
+                if (recipe.getImage() != null) {
+                    statement.setInt(10, recipe.getId());
+                }
+                else {
+                    statement.setInt(9, recipe.getId());
+                }
             }
 
-            statement.setInt(1, recipe.getRecipeCategory().getId());
+            statement.setInt(1, recipe.getCategoryId());
             statement.setString(2, recipe.getName());
             statement.setString(3, recipe.getCustomName());
             statement.setString(4, recipe.getDescription());
-            statement.setInt(5, recipe.getLevel());
+            statement.setInt(5, recipe.getLevelId());
             statement.setInt(6, recipe.getDuration());
             statement.setInt(7, recipe.getNumberOfPersons());
-            statement.setString(8, recipe.getImage());
-            statement.setString(9, recipe.getCreatedAt());
+            statement.setString(8, recipe.getCreatedAt());
+
+            if (recipe.getImage() != null) {
+                statement.setString(9, !recipe.getImage().equals("") ? recipe.getImage() : null);
+            }
 
             int affectedRows = statement.executeUpdate();
 
@@ -195,12 +215,21 @@ public class RecipeDAOImpl implements RecipeDAO {
 
     @Override
     public void delete(Recipe recipe) {
+        deleteById(recipe.getId());
+    }
+
+    @Override
+    public void delete(int id) {
+        deleteById(id);
+    }
+
+    private void deleteById(int id) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement = conn.prepareStatement("DELETE FROM recipe WHERE id=?");
 
-            statement.setInt(1, recipe.getId());
+            statement.setInt(1, id);
             statement.executeUpdate();
 
             statement.close();
@@ -209,4 +238,5 @@ public class RecipeDAOImpl implements RecipeDAO {
             e.printStackTrace();
         }
     }
+
 }

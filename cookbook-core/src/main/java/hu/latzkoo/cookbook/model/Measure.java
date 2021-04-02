@@ -8,6 +8,13 @@ public class Measure {
     private StringProperty name = new SimpleStringProperty(this, "name");
     private IntegerProperty measureType = new SimpleIntegerProperty(this, "measureType");
 
+    public Measure() {
+    }
+
+    public Measure(int id) {
+        setId(id);
+    }
+
     public int getId() {
         return id.get();
     }

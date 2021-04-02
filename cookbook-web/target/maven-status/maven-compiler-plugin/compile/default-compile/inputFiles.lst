@@ -1,1 +1,6 @@
-/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeController.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeSaveController.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeItemController.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeListController.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeFormController.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/filter/DefaultFilter.java
+/Users/latzkoo/SZTE/4_felev/Alkalmazasfejlesztes/gyakorlat/cookbook/cookbook-web/src/main/java/hu/latzkoo/cookbook/controller/RecipeDeleteController.java

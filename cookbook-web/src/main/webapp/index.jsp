@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="includes/head.jsp" %>
 <body class="d-flex flex-column h-100 bg-light">
-<%@ include file="layouts/header.jsp" %>
+<%@ include file="layouts/common/header.jsp" %>
 
 <main role="main" class="flex-shrink-0">
     <section class="content my-5">
@@ -13,7 +13,7 @@
     </section>
 </main>
 
-<%@ include file="layouts/footer.jsp" %>
+<%@ include file="layouts/common/footer.jsp" %>
 <%@ include file="includes/scripts.jsp" %>
 </body>
 </html>

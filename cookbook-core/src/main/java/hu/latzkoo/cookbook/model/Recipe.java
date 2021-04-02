@@ -1,6 +1,8 @@
 package hu.latzkoo.cookbook.model;
 
 import javafx.beans.property.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe {
 
@@ -10,14 +12,14 @@ public class Recipe {
     private StringProperty name = new SimpleStringProperty(this, "name");
     private StringProperty customName = new SimpleStringProperty(this, "customName");
     private StringProperty description = new SimpleStringProperty(this, "description");
-    private SimpleIntegerProperty level = new SimpleIntegerProperty(this, "level");
+    private SimpleIntegerProperty levelId = new SimpleIntegerProperty(this, "levelId");
+    private ObjectProperty<RecipeLevel> recipeLevel = new SimpleObjectProperty<>(this, "recipeLevel");
     private SimpleIntegerProperty duration = new SimpleIntegerProperty(this, "duration");
     private SimpleIntegerProperty numberOfPersons = new SimpleIntegerProperty(this, "numberOfPersons");
     private StringProperty image = new SimpleStringProperty(this, "image");
     private StringProperty createdAt = new SimpleStringProperty(this, "createdAt");
     private IntegerProperty materialItems = new SimpleIntegerProperty(this, "materialItems");
-    private ObjectProperty<Material> materials =
-            new SimpleObjectProperty<>(this, "materials");
+    private List<RecipeMaterial> materials = new ArrayList<>();
 
     public int getId() {
         return id.get();
@@ -91,16 +93,28 @@ public class Recipe {
         this.description.set(description);
     }
 
-    public int getLevel() {
-        return level.get();
+    public int getLevelId() {
+        return levelId.get();
     }
 
-    public SimpleIntegerProperty levelProperty() {
-        return level;
+    public SimpleIntegerProperty levelIdProperty() {
+        return levelId;
     }
 
-    public void setLevel(int level) {
-        this.level.set(level);
+    public void setLevelId(int levelId) {
+        this.levelId.set(levelId);
+    }
+
+    public RecipeLevel getRecipeLevel() {
+        return recipeLevel.get();
+    }
+
+    public ObjectProperty<RecipeLevel> recipeLevelProperty() {
+        return recipeLevel;
+    }
+
+    public void setRecipeLevel(RecipeLevel recipeLevel) {
+        this.recipeLevel.set(recipeLevel);
     }
 
     public int getDuration() {
@@ -163,15 +177,11 @@ public class Recipe {
         this.materialItems.set(materialItems);
     }
 
-    public Material getMaterials() {
-        return materials.get();
-    }
-
-    public ObjectProperty<Material> materialsProperty() {
+    public List<RecipeMaterial> getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Material materials) {
-        this.materials.set(materials);
+    public void setMaterials(List<RecipeMaterial> materials) {
+        this.materials = materials;
     }
 }

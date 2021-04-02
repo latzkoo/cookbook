@@ -36,7 +36,7 @@ public class MaterialListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        materials = materialDAO.get(true);
+        materials = materialDAO.findAll(true);
         setTableData();
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));

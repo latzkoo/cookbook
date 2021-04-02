@@ -11,4 +11,6 @@ cookbook-core/log/
 cookbook-core/target/
 cookbook-desktop/log/
 cookbook-desktop/target/
+cookbook-web/log/
+cookbook-web/target/
 cookbook-core/src/main/resources/application.properties

@@ -17,7 +17,7 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public List<Material> get(boolean outOfStock) {
+    public List<Material> findAll(boolean outOfStock) {
         List<Material> materials = new ArrayList<>();
 
         try {
@@ -34,11 +34,11 @@ public class MaterialDAOImpl implements MaterialDAO {
                 material.setName(result.getString("name"));
                 material.setOfficialMeasureId(result.getInt("officialMeasureId"));
                 material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
-                material.setMinStock(result.getDouble("minStock"));
-                material.setStock(result.getDouble("stock"));
+                material.setMinStock(result.getInt("minStock"));
+                material.setStock(result.getInt("stock"));
 
-                material.setMeasure(measureDAO.getById(material.getMeasureId()));
-                material.setOfficialMeasure(measureDAO.getById(material.getOfficialMeasureId()));
+                material.setMeasure(measureDAO.findById(material.getMeasureId()));
+                material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
 
                 materials.add(material);
             }
@@ -50,6 +50,40 @@ public class MaterialDAOImpl implements MaterialDAO {
         }
 
         return materials;
+    }
+
+    @Override
+    public Material findById(int id) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM material WHERE id=?");
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                Material material = new Material();
+                material.setId(result.getInt("id"));
+                material.setMeasureId(result.getInt("measureId"));
+                material.setName(result.getString("name"));
+                material.setOfficialMeasureId(result.getInt("officialMeasureId"));
+                material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
+                material.setMinStock(result.getInt("minStock"));
+                material.setStock(result.getInt("stock"));
+
+                material.setMeasure(measureDAO.findById(material.getMeasureId()));
+                material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
+
+                statement.close();
+
+                return material;
+            }
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override

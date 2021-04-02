@@ -16,7 +16,7 @@ public class MeasureDAOImpl implements MeasureDAO {
     }
 
     @Override
-    public List<Measure> get() {
+    public List<Measure> findAll() {
         List<Measure> measures = new ArrayList<>();
 
         try {
@@ -44,7 +44,7 @@ public class MeasureDAOImpl implements MeasureDAO {
     }
 
     @Override
-    public Measure getById(int id) {
+    public Measure findById(int id) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
