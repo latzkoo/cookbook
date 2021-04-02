@@ -48,6 +48,9 @@ public class MainController implements Initializable {
     private TableColumn<Material, Integer> minStock;
 
     @FXML
+    private TableColumn<Material, Integer> stock;
+
+    @FXML
     private TableColumn<Material, Void> operations;
 
     @FXML
@@ -75,6 +78,7 @@ public class MainController implements Initializable {
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         minStock.setCellValueFactory(new PropertyValueFactory<>("minStock"));
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         operations.setCellFactory(param -> new TableCell<>(){
 
             private final Button btnEdit = new Button();
@@ -143,6 +147,8 @@ public class MainController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
                 "Biztos, hogy törli?", ButtonType.YES, ButtonType.CANCEL);
 
+        alert.setTitle("Törlés");
+        alert.setHeaderText("Törlés");
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType.equals(ButtonType.YES)) {
                 materialDAO.delete(material);

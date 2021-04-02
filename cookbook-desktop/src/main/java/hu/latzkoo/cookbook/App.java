@@ -21,8 +21,8 @@ public class App extends Application {
         App.stage = stage;
         App.loadFXML("/fxml/main.fxml");
 
-        stage.setMinWidth(600);
-        stage.setWidth(600);
+        stage.setMinWidth(720);
+        stage.setWidth(720);
         stage.setMinHeight(400);
         stage.setHeight(400);
         stage.show();

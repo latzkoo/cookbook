@@ -28,7 +28,7 @@
                 <children>
                     <TextFlow fx:id="alert" prefWidth="580.0" styleClass="alert" onMouseClicked="#showList">
                          <children>
-                             <Text fx:id="alertMessage" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" />
+                             <Text styleClass="alert-text" fx:id="alertMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
                          </children>
                     </TextFlow>
                 </children>
@@ -48,7 +48,7 @@
                         </right>
                     </BorderPane>
                     <TextField fx:id="search" onKeyReleased="#onSearch" promptText="keresés" />
-                    <TableView fx:id="materialTable" prefHeight="373.0" prefWidth="580.0">
+                    <TableView fx:id="materialTable" prefHeight="373.0" prefWidth="700.0">
                         <placeholder>
                             <Text styleClass="table-placeholder">Nem található alapanyag.</Text>
                         </placeholder>
@@ -56,6 +56,7 @@
                             <TableColumn fx:id="name" prefWidth="252" resizable="false" text="Megnevezés" />
                             <TableColumn fx:id="measure" prefWidth="120" resizable="false" text="Mértékegység" />
                             <TableColumn fx:id="minStock" prefWidth="120" resizable="false" text="Minimális készlet" />
+                            <TableColumn fx:id="stock" prefWidth="120" resizable="false" text="Készlet" />
                             <TableColumn fx:id="operations" prefWidth="70" resizable="false" sortable="false" text="Műveletek" />
                         </columns>
                     </TableView>

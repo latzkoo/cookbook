@@ -28,17 +28,21 @@
 .btn-operation {
     -fx-background-color: transparent;
     -fx-padding: 0 0 0 5px;
-    -fx-cursor: hand;
+}
+.btn-operation:hover {
+    -fx-background-color: #e9e9e9;
 }
 .alert-wrapper {
 }
 .alert {
     -fx-padding: 5 10;
-    -fx-background-color: #cb002f;
-    -fx-cursor: hand;
+    -fx-background-color: #f8d7da;
 }
 .alert:hover {
-    -fx-background-color: #d2002e;
+    -fx-background-color: #ecc9cd;
+}
+.alert-text {
+    -fx-text-fill: #721c24;
 }
 .list-content {
     -fx-padding: 10;

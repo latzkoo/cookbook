@@ -84,4 +84,9 @@ $(window).bind("load", function () {
         $(this).closest('.row-item').remove();
     });
 
+    $(document).on("change", "#shoppingMaterial", function() {
+        let measure = $(this).children("option:selected").data("measure");
+        $(".measure").html(measure);
+    });
+
 });

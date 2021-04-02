@@ -146,6 +146,24 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
+    public void updateStock(int id, int stock) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            PreparedStatement statement = conn.prepareStatement("UPDATE material SET stock=stock+? WHERE id=?");
+
+            statement.setInt(1, stock);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+
+            statement.close();
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void delete(Material material) {
         try {
             Class.forName("org.sqlite.JDBC");
