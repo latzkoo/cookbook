@@ -8,10 +8,11 @@ import java.util.List;
 public interface RecipeDAO {
 
     int count(String q);
+    List<Recipe> findAll();
     List<Recipe> findAll(String q, Pager pager);
     Recipe findById(int id);
     Recipe save(Recipe recipe);
-    void delete(Recipe recipe);
-    void delete(int id);
+    boolean delete(Recipe recipe);
+    boolean delete(int id);
 
 }

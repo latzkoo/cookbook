@@ -8,8 +8,7 @@
         <section class="content my-5">
             <div class="container m-auto">
                 <div class="row">
-                    <div class="col-12 p-0"><h3>Bevásárlás ›
-                        <span class="small">új bevásárlás</span></h3></div>
+                    <div class="col-12 p-0"><h3>Bevásárlás › <span class="small">új bevásárlás</span></h3></div>
                 </div>
 
                 <c:choose>
@@ -18,7 +17,12 @@
                             <div class="col-12 p-0">
                                 <div class="alert alert-success" role="alert">
                                     <div class="font-weight-bold">
-                                        <c:choose><c:when test="${param.success.equals('add')}">A bevásárlás hozzáadása sikeres.</c:when></c:choose>
+                                        <c:choose>
+                                            <c:when test="${param.success.equals('add')}">A bevásárlás hozzáadása sikeres.
+                                                <a href="${pageContext.request.contextPath}/shopping/remove?materialId=${param.materialId}&stock=${param.stock}">Visszavonás</a>
+                                            </c:when>
+                                            <c:when test="${param.success.equals('remove')}">A bevásárlás visszavonása sikeres.</c:when>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>

@@ -37,9 +37,11 @@ public class RecipeSaveController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RecipeDAO recipeDAO = new RecipeDAOImpl();
         Recipe recipe = new Recipe();
+        String event = "add";
 
         if (request.getParameter("id") != null) {
             recipe.setId(Integer.parseInt(request.getParameter("id")));
+            event = "modify";
         }
 
         // Fields
@@ -86,7 +88,7 @@ public class RecipeSaveController extends HttpServlet {
             recipeMaterialDAO.insert(recipeMaterials);
         }
 
-        response.sendRedirect(request.getContextPath() + "/recipes?success=add");
+        response.sendRedirect(request.getContextPath() + "/recipes?success=" + event);
     }
 
 }

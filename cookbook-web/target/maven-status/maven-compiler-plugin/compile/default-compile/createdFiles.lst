@@ -1,1 +1,5 @@
+hu/latzkoo/cookbook/controller/MenuFormController.class
+hu/latzkoo/cookbook/controller/MenuListController.class
+hu/latzkoo/cookbook/controller/MenuDeleteController.class
 hu/latzkoo/cookbook/controller/RecipeDeleteController.class
+hu/latzkoo/cookbook/controller/MenuSaveController.class

@@ -56,7 +56,16 @@ public class RecipeDAOImpl implements RecipeDAO {
     }
 
     @Override
+    public List<Recipe> findAll() {
+        return getRecipeList(null, null);
+    }
+
+    @Override
     public List<Recipe> findAll(String q, Pager pager) {
+        return getRecipeList(q, pager);
+    }
+
+    private List<Recipe> getRecipeList(String q, Pager pager) {
         List<Recipe> recipes = new ArrayList<>();
 
         try {
@@ -153,17 +162,28 @@ public class RecipeDAOImpl implements RecipeDAO {
             Connection conn = DriverManager.getConnection(connectionURL);
             PreparedStatement statement;
 
+            // Insert
             if (recipe.getId() <= 0) {
-                statement = conn.prepareStatement("INSERT INTO recipe " +
+                String query = "INSERT INTO recipe " +
                         "(categoryId, name, customName, description, levelId," +
                         " duration, numberOfPersons, createdAt, image)" +
-                        "VALUES (?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                        "VALUES (?,?,?,?,?,?,?,?,?)";
+                statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+                setDefaults(recipe, statement);
+                statement.setString(8, recipe.getCreatedAt());
+
+                if (recipe.getImage() != null) {
+                    statement.setString(9, !recipe.getImage().equals("") ? recipe.getImage() : null);
+                }
+                else {
+                    statement.setString(9, null);
+                }
             }
+            //Updates
             else {
-                String query = "UPDATE recipe SET " +
-                        "categoryId=?, name=?, customName=?, " +
-                        "description=?, levelId=?, duration=?, numberOfPersons=?, " +
-                        "createdAt=?";
+                String query = "UPDATE recipe SET categoryId=?, name=?, customName=?, " +
+                        "description=?, levelId=?, duration=?, numberOfPersons=?";
 
                 if (recipe.getImage() != null) query += ", image=?";
 
@@ -171,25 +191,15 @@ public class RecipeDAOImpl implements RecipeDAO {
 
                 statement = conn.prepareStatement(query);
 
+                setDefaults(recipe, statement);
+
                 if (recipe.getImage() != null) {
-                    statement.setInt(10, recipe.getId());
-                }
-                else {
+                    statement.setString(8, !recipe.getImage().equals("") ? recipe.getImage() : null);
                     statement.setInt(9, recipe.getId());
                 }
-            }
-
-            statement.setInt(1, recipe.getCategoryId());
-            statement.setString(2, recipe.getName());
-            statement.setString(3, recipe.getCustomName());
-            statement.setString(4, recipe.getDescription());
-            statement.setInt(5, recipe.getLevelId());
-            statement.setInt(6, recipe.getDuration());
-            statement.setInt(7, recipe.getNumberOfPersons());
-            statement.setString(8, recipe.getCreatedAt());
-
-            if (recipe.getImage() != null) {
-                statement.setString(9, !recipe.getImage().equals("") ? recipe.getImage() : null);
+                else {
+                    statement.setInt(8, recipe.getId());
+                }
             }
 
             int affectedRows = statement.executeUpdate();
@@ -214,28 +224,42 @@ public class RecipeDAOImpl implements RecipeDAO {
     }
 
     @Override
-    public void delete(Recipe recipe) {
-        deleteById(recipe.getId());
+    public boolean delete(Recipe recipe) {
+        return deleteById(recipe.getId());
     }
 
     @Override
-    public void delete(int id) {
-        deleteById(id);
+    public boolean delete(int id) {
+        return deleteById(id);
     }
 
-    private void deleteById(int id) {
+    private void setDefaults(Recipe recipe, PreparedStatement statement) throws SQLException {
+        statement.setInt(1, recipe.getCategoryId());
+        statement.setString(2, recipe.getName());
+        statement.setString(3, recipe.getCustomName());
+        statement.setString(4, recipe.getDescription());
+        statement.setInt(5, recipe.getLevelId());
+        statement.setInt(6, recipe.getDuration());
+        statement.setInt(7, recipe.getNumberOfPersons());
+    }
+
+    private boolean deleteById(int id) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM recipe WHERE id=?");
+            PreparedStatement statement = conn.prepareStatement("PRAGMA foreign_keys = ON");
+            statement.executeUpdate();
+            statement = conn.prepareStatement("DELETE FROM recipe WHERE id=?");
 
             statement.setInt(1, id);
-            statement.executeUpdate();
-
+            int result = statement.executeUpdate();
+            System.out.println(result);
             statement.close();
+
+            return result > 0;
         }
         catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 

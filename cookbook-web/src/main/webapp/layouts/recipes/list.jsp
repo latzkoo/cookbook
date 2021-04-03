@@ -52,7 +52,9 @@
                         <div class="row p-0">
                             <div class="col-12 p-0">
                                 <div class="alert alert-danger" role="alert">
-                                    <c:choose><c:when test="${param.success.equals('add')}">A recept hozzáadása sikertelen.</c:when><c:when test="${param.success.equals('modify')}">A recept módosítása sikertelen.</c:when><c:when test="${param.success.equals('delete')}">A recept törlése sikertelen.</c:when></c:choose>
+                                    <div class="font-weight-bold">
+                                    <c:choose><c:when test="${param.error.equals('add')}">A recept hozzáadása sikertelen.</c:when><c:when test="${param.error.equals('modify')}">A recept módosítása sikertelen.</c:when><c:when test="${param.error.equals('delete')}">A recept nem törölhető, mert szerepel egy menüben.</c:when></c:choose>
+                                    </div>
                                 </div>
                             </div>
                         </div>

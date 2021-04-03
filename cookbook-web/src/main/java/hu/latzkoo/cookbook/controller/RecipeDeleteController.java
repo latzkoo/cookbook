@@ -16,8 +16,11 @@ public class RecipeDeleteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RecipeDAO recipeDAO = new RecipeDAOImpl();
-        recipeDAO.delete(Integer.parseInt(request.getParameter("id")));
 
-        response.sendRedirect(request.getContextPath() + "/recipes?success=delete");
+        String status;
+        if (recipeDAO.delete(Integer.parseInt(request.getParameter("id")))) status = "success";
+        else status = "error";
+
+        response.sendRedirect(request.getContextPath() + "/recipes?"+status+"=delete");
     }
 }

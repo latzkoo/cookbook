@@ -146,11 +146,12 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public void updateStock(int id, int stock) {
+    public void updateStock(String event, int id, int stock) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
-            PreparedStatement statement = conn.prepareStatement("UPDATE material SET stock=stock+? WHERE id=?");
+            PreparedStatement statement = conn.prepareStatement("UPDATE material SET stock=stock"+
+                    (event.equals("decrease") ? "-" : "+")+"? WHERE id=?");
 
             statement.setInt(1, stock);
             statement.setInt(2, id);
