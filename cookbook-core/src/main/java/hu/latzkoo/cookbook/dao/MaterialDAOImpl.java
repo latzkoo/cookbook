@@ -25,7 +25,7 @@ public class MaterialDAOImpl implements MaterialDAO {
             Connection conn = DriverManager.getConnection(connectionURL);
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM material" +
-                    (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY id");
+                    (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY name");
 
             while(result.next()) {
                 Material material = new Material();
