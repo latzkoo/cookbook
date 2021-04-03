@@ -47,10 +47,10 @@
                   <Label text="Átváltás hivatalos mértékegységre" GridPane.rowIndex="2" />
                   <Label text="Minimális mennyiség" GridPane.rowIndex="3" />
                   <TextField fx:id="name" GridPane.columnIndex="1" />
-                  <ComboBox fx:id="measures" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="measures" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                        <children>
-                           <TextField fx:id="officialMeasureUnit" prefWidth="100.0" disable="true" />
+                           <TextField fx:id="officialMeasureUnit" prefWidth="120.0" disable="true" />
                            <ComboBox fx:id="officialMeasures" disable="true" />
                        </children>
                        <GridPane.margin>

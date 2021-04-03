@@ -28,8 +28,9 @@ public class MeasureDAOImpl implements MeasureDAO {
             while(result.next()) {
                 Measure measure = new Measure();
                 measure.setId(result.getInt("id"));
-                measure.setMeasureType(result.getInt("measureType"));
+                measure.setCategoryId(result.getInt("categoryId"));
                 measure.setName(result.getString("name"));
+                measure.setMultiplier(result.getInt("multiplier"));
 
                 measures.add(measure);
             }
@@ -55,8 +56,9 @@ public class MeasureDAOImpl implements MeasureDAO {
             if (result.next()) {
                 Measure measure = new Measure();
                 measure.setId(result.getInt("id"));
-                measure.setMeasureType(result.getInt("measureType"));
+                measure.setCategoryId(result.getInt("categoryId"));
                 measure.setName(result.getString("name"));
+                measure.setMultiplier(result.getInt("multiplier"));
 
                 statement.close();
 
@@ -80,15 +82,16 @@ public class MeasureDAOImpl implements MeasureDAO {
             PreparedStatement statement;
 
             if (measure.getId() <= 0) {
-                statement = conn.prepareStatement("INSERT INTO measure (measureType, name) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
+                statement = conn.prepareStatement("INSERT INTO measure (categoryId, name, multiplier) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS);
             }
             else {
-                statement = conn.prepareStatement("UPDATE measure SET measureType=?, name=? WHERE id=?");
+                statement = conn.prepareStatement("UPDATE measure SET categoryId=?, name=?, multiplier=? WHERE id=?");
                 statement.setInt(3, measure.getId());
             }
 
             statement.setInt(1, measure.getId());
             statement.setString(2, measure.getName());
+            statement.setInt(3, measure.getMultiplier());
 
             int affectedRows = statement.executeUpdate();
 

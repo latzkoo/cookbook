@@ -7,7 +7,11 @@
                 id="materialId-" required="required">
             <option value="" disabled="disabled" selected="selected">Válasszon!</option>
             <c:forEach items="${requestScope.materials}" var="material">
-                <option value="<c:out value="${material.getId()}"/>"><c:out value="${material.getName()}"/></option>
+                <option value="<c:out value="${material.getId()}"/>"
+                        data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
+                        data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
+                        data-mi="<c:out value="${material.getMeasure().getId()}"/>">
+                    <c:out value="${material.getName()}"/></option>
             </c:forEach>
         </select>
     </div>
@@ -22,7 +26,9 @@
                 id="measureId-" required="required">
             <option value="" disabled="disabled" selected="selected">Válasszon!</option>
             <c:forEach items="${requestScope.measures}" var="measure">
-                <option value="<c:out value="${measure.getId()}"/>"><c:out value="${measure.getName()}"/></option>
+                <option value="<c:out value="${measure.getId()}"/>"
+                        data-category="<c:out value="${measure.getCategoryId()}"/>">
+                    <c:out value="${measure.getName()}"/></option>
             </c:forEach>
         </select>
     </div>

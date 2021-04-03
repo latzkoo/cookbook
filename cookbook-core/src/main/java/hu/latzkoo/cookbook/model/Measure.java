@@ -6,7 +6,8 @@ public class Measure {
 
     private IntegerProperty id = new SimpleIntegerProperty(this, "id");
     private StringProperty name = new SimpleStringProperty(this, "name");
-    private IntegerProperty measureType = new SimpleIntegerProperty(this, "measureType");
+    private IntegerProperty categoryId = new SimpleIntegerProperty(this, "categoryId");
+    private IntegerProperty multiplier = new SimpleIntegerProperty(this, "multiplier");
 
     public Measure() {
     }
@@ -39,20 +40,32 @@ public class Measure {
         this.name.set(name);
     }
 
-    public int getMeasureType() {
-        return measureType.get();
+    public int getCategoryId() {
+        return categoryId.get();
     }
 
-    public IntegerProperty measureTypeProperty() {
-        return measureType;
+    public IntegerProperty categoryIdProperty() {
+        return categoryId;
     }
 
-    public void setMeasureType(int measureType) {
-        this.measureType.set(measureType);
+    public void setCategoryId(int categoryId) {
+        this.categoryId.set(categoryId);
+    }
+
+    public int getMultiplier() {
+        return multiplier.get();
+    }
+
+    public IntegerProperty multiplierProperty() {
+        return multiplier;
+    }
+
+    public void setMultiplier(int multiplier) {
+        this.multiplier.set(multiplier);
     }
 
     @Override
     public String toString() {
-        return name.getValue();
+        return getName();
     }
 }

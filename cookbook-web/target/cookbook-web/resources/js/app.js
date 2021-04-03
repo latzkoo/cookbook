@@ -89,4 +89,40 @@ $(window).bind("load", function () {
         $(".measure").html(measure);
     });
 
+    // Measures
+    function setMeasureSelect(row, selectFirst) {
+        let material = $("[name=materialId]", row);
+
+        let measureId = parseInt(material.children("option:selected").data("mi"));
+        let measureCategoryId = parseInt(material.children("option:selected").data("mc"));
+        let officialMeasureCategoryId = parseInt(material.children("option:selected").data("mcofficial"));
+        let measures = $("[name=measureId] option", row);
+
+        let matchingListElements = measures.filter(function(i, item) {
+            let id = parseInt($(this).val());
+            let categoryId = parseInt($(this).data("category"));
+
+            return ($(this).val() === "" ||
+                (measureCategoryId === 3 && (categoryId === officialMeasureCategoryId || id === measureId)) ||
+                (measureCategoryId !== 3 && categoryId === measureCategoryId));
+        });
+
+        if (selectFirst) {
+            $("[name=measureId]", row).val("");
+        }
+
+        measures.hide();
+        matchingListElements.show();
+    }
+
+    $(document).on("change", "[name=materialId]", function() {
+        let row = $(this).closest(".row-item");
+        setMeasureSelect(row, true);
+    });
+
+    $(".row-item").each(function () {
+        let row = $(this);
+        setMeasureSelect(row, false);
+    });
+
 });

@@ -13,7 +13,6 @@ public class Material {
     private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
     private IntegerProperty stock = new SimpleIntegerProperty(this, "stock");
     private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
-//    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>(this, "date");
 
     public Material() {
     }

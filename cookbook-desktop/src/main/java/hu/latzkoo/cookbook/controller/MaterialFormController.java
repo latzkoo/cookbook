@@ -59,13 +59,13 @@ public class MaterialFormController {
             measures.getSelectionModel().select(measure);
 
             // Set additional fields status
-            changeAdditionalFieldsStatus(measure.getMeasureType());
+            changeAdditionalFieldsStatus(measure.getCategoryId());
         }
 
         officialMeasures.valueProperty().bindBidirectional(material.officialMeasureProperty());
         officialMeasures.setItems(FXCollections.observableArrayList(
                 measureList.stream()
-                .filter(m -> m.getMeasureType() == 1)
+                .filter(m -> m.getCategoryId() != 3)
                 .collect(Collectors.toList())));
 
         if (material.getOfficialMeasureId() > 0) {
@@ -76,7 +76,7 @@ public class MaterialFormController {
         // Measure change event
         measures.setOnAction(event -> {
             Measure selectedMeasure = measures.getSelectionModel().getSelectedItem();
-            changeAdditionalFieldsStatus(selectedMeasure.getMeasureType());
+            changeAdditionalFieldsStatus(selectedMeasure.getCategoryId());
         });
 
         officialMeasureUnit.textProperty().bindBidirectional(
@@ -97,8 +97,8 @@ public class MaterialFormController {
                 .or(minStock.textProperty().isEmpty())));
     }
 
-    private void changeAdditionalFieldsStatus(int measureType) {
-        if (measureType == 2) {
+    private void changeAdditionalFieldsStatus(int categoryId) {
+        if (categoryId == 3) {
             officialMeasures.setDisable(false);
             officialMeasureUnit.setDisable(false);
         }
