@@ -1,6 +1,7 @@
 package hu.latzkoo.cookbook.controller;
 
 import hu.latzkoo.cookbook.dao.*;
+import hu.latzkoo.cookbook.model.Measure;
 import hu.latzkoo.cookbook.model.Recipe;
 import hu.latzkoo.cookbook.model.RecipeMaterial;
 
@@ -16,6 +17,8 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/cooking/recipe"})
 public class CookingRecipeController extends HttpServlet {
 
+    private final MeasureDAO measureDAO = new MeasureDAOImpl();
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!request.getParameter("recipeId").isEmpty() && !request.getParameter("numberOfPersons").isEmpty()) {
@@ -26,10 +29,33 @@ public class CookingRecipeController extends HttpServlet {
 
             List<RecipeMaterial> outOfStockMaterials = new ArrayList<>();
             for (RecipeMaterial recipeMaterial : recipe.getMaterials()) {
-                double unitPerPerson = (double) recipeMaterial.getUnit() / recipe.getNumberOfPersons();
+                Measure measure;
+
+                if (recipeMaterial.getMaterial().getCustomMeasureId() > 0 &&
+                        recipeMaterial.getMaterial().getCustomMeasureId() == recipeMaterial.getMeasure().getId()) {
+                    measure = measureDAO.findById(recipeMaterial.getMaterial().getOfficialMeasureId());
+                }
+                else {
+                    measure = recipeMaterial.getMeasure();
+                }
+
+                int unitQty = recipeMaterial.getUnit() * measure.getMultiplier();
+
+                if (recipeMaterial.getMaterial().getCustomMeasureId() == recipeMaterial.getMeasure().getId()) {
+                    unitQty *= recipeMaterial.getMaterial().getOfficialMeasureUnit();
+                }
+
+                double unitPerPerson = (double) unitQty / recipe.getNumberOfPersons();
                 double unit = unitPerPerson * numberOfPersons;
 
                 if (unit > recipeMaterial.getMaterial().getStock()) {
+                    unit = unit / measure.getMultiplier();
+
+                    if (recipeMaterial.getMaterial().getCustomMeasureId() > 0 &&
+                            recipeMaterial.getMaterial().getCustomMeasureId() == recipeMaterial.getMeasure().getId()) {
+                        unit /= recipeMaterial.getMaterial().getOfficialMeasureUnit();
+                    }
+
                     recipeMaterial.setRequiredUnit(unit);
                     outOfStockMaterials.add(recipeMaterial);
                 }

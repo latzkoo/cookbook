@@ -33,7 +33,7 @@
                             <c:forEach items="${requestScope.outOfStockMaterials}" var="outOfStockMaterial">
                                 <tr class="row">
                                     <td class="col-6">${outOfStockMaterial.getMaterial().getName()}</td>
-                                    <td class="col-6"><fmt:formatNumber type="number" pattern="###.#" value="${outOfStockMaterial.getRequiredUnit()}" />
+                                    <td class="col-6"><fmt:formatNumber type="number" pattern="#####.##" value="${outOfStockMaterial.getRequiredUnit()}" />
                                             ${outOfStockMaterial.getMeasure().getName()}</td>
                                 </tr>
                             </c:forEach>
