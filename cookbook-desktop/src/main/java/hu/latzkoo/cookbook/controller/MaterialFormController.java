@@ -7,11 +7,8 @@ import hu.latzkoo.cookbook.dao.MeasureDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import hu.latzkoo.cookbook.model.TypeConverter;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -105,7 +102,7 @@ public class MaterialFormController {
 
         // Allow only number
         officialMeasureUnit.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
+            if (newValue != null && !newValue.matches("\\d*")) {
                 officialMeasureUnit.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
@@ -152,12 +149,12 @@ public class MaterialFormController {
     }
 
     @FXML
-    private void onCancel(ActionEvent event) {
+    private void onCancel() {
         closeModal();
     }
 
     @FXML
-    private void onSave(ActionEvent event) {
+    private void onSave() {
         save();
     }
 

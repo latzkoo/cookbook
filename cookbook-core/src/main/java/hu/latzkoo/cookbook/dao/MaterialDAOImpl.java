@@ -79,6 +79,9 @@ public class MaterialDAOImpl implements MaterialDAO {
         material.setCustomMeasure(measureDAO.findById(material.getCustomMeasureId()));
         material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
 
+        double unitStock = (double) result.getInt("stock") / material.getMeasure().getMultiplier();
+        material.setMeasureUnit(unitStock);
+
         return material;
     }
 
@@ -103,7 +106,7 @@ public class MaterialDAOImpl implements MaterialDAO {
             statement.setInt(1, material.getMeasure().getId());
             statement.setString(2, material.getName());
 
-            if (material.getCustomMeasure() != null) {
+            if (material.getCustomMeasure() != null && material.getCustomMeasure().getId() > 0) {
                 statement.setInt(3, material.getCustomMeasure().getId());
             }
             else {

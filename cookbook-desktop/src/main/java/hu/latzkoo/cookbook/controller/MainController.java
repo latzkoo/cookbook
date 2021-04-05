@@ -24,6 +24,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -79,7 +80,7 @@ public class MainController implements Initializable {
         minStock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
                 cellData.getValue().getMinStock() + " " + cellData.getValue().getMeasure().getName()));
         stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
-                cellData.getValue().getStock() + " " + cellData.getValue().getMeasure().getName()));
+                cellData.getValue().getMeasureUnit() + " " + cellData.getValue().getMeasure().getName()));
 
         operations.setCellFactory(param -> new TableCell<>(){
             private final Button btnEdit = new Button();
@@ -146,12 +147,13 @@ public class MainController implements Initializable {
 
     private void delete(Material material) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Biztos, hogy törli?", ButtonType.YES, ButtonType.CANCEL);
+                "Biztos, hogy törli?", new ButtonType("Igen", ButtonBar.ButtonData.YES),
+                new ButtonType("Mégsem", ButtonBar.ButtonData.CANCEL_CLOSE));
 
         alert.setTitle("Törlés");
         alert.setHeaderText("Törlés");
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType.equals(ButtonType.YES)) {
+        alert.showAndWait().ifPresent(button -> {
+            if (button.getButtonData().equals(ButtonBar.ButtonData.YES)) {
                 materialDAO.delete(material);
                 setMaterials(materialDAO.findAll(false));
                 setTableData();
@@ -185,17 +187,7 @@ public class MainController implements Initializable {
             MaterialFormController controller = loader.getController();
             controller.init(this, stage, material);
 
-            stage.initModality(Modality.APPLICATION_MODAL);
-            Scene scene = new Scene(root, 600, 400);
-            stage.setScene(scene);
-
-            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
-            stage.setX(bounds.getWidth() / 2 - 330);
-            stage.setY(bounds.getHeight() / 2 - 230);
-
-            scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
-            stage.showAndWait();
+            showModal(root, stage);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -212,21 +204,25 @@ public class MainController implements Initializable {
             MaterialListController controller = loader.getController();
             controller.init(stage);
 
-            stage.initModality(Modality.APPLICATION_MODAL);
-            Scene scene = new Scene(root, 600, 400);
-            stage.setScene(scene);
-
-            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
-            stage.setX(bounds.getWidth() / 2 - 330);
-            stage.setY(bounds.getHeight() / 2 - 230);
-
-            scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
-            stage.showAndWait();
+            showModal(root, stage);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showModal(Parent root, Stage stage) {
+        stage.initModality(Modality.APPLICATION_MODAL);
+        Scene scene = new Scene(root, 600, 400);
+        stage.setScene(scene);
+
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+
+        stage.setX(bounds.getWidth() / 2 - 330);
+        stage.setY(bounds.getHeight() / 2 - 230);
+
+        scene.getStylesheets().add(String.valueOf(App.class.getResource("/css/style.css")));
+        stage.showAndWait();
     }
 
     public void onSearch() {
