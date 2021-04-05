@@ -125,4 +125,41 @@ $(window).bind("load", function () {
         setMeasureSelect(row, false);
     });
 
+    // Cooking
+    $(document).on("click", ".button-cooking", function() {
+        let recipeId = $(this).data("id");
+        let recipeName = $(this).data("name");
+
+        $("[name=recipeId]").val(recipeId);
+        $("#cookingModalLabel").html(recipeName + " elkészítése");
+
+        $("#cookingModal").modal({
+            show: true,
+            keyboard: true
+        });
+    });
+
+    $(document).on("click", "#cookIt", function() {
+        let url = $("#formCookingRecipe").attr("action");
+        let formData = $("#formCookingRecipe").serialize();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            headers: {},
+            data: formData,
+            dataType: 'text',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                $("body").prepend(data);
+                $("#cookingModal").modal("toggle");
+                $("#cookingMessageModal").modal({
+                    show: true,
+                    keyboard: true
+                });
+            }
+        });
+    });
+
 });

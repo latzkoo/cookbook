@@ -54,9 +54,8 @@
                         </placeholder>
                         <columns>
                             <TableColumn fx:id="name" prefWidth="252" resizable="false" text="Megnevezés" />
-                            <TableColumn fx:id="minStock" prefWidth="120" resizable="false" text="Minimális készlet" />
-                            <TableColumn fx:id="stock" prefWidth="120" resizable="false" text="Készlet" />
-                            <TableColumn fx:id="measure" prefWidth="120" resizable="false" text="Mértékegység" />
+                            <TableColumn fx:id="minStock" prefWidth="180" resizable="false" text="Minimális készlet" />
+                            <TableColumn fx:id="stock" prefWidth="180" resizable="false" text="Készlet" />
                             <TableColumn fx:id="operations" prefWidth="70" resizable="false" sortable="false" text="Műveletek" />
                         </columns>
                     </TableView>

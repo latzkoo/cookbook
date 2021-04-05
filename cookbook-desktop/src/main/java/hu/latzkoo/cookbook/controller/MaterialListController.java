@@ -3,6 +3,7 @@ package hu.latzkoo.cookbook.controller;
 import hu.latzkoo.cookbook.dao.MaterialDAO;
 import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -29,10 +30,10 @@ public class MaterialListController implements Initializable {
     private TableColumn<Material, String> name;
 
     @FXML
-    private TableColumn<Material, Integer> minStock;
+    private TableColumn<Material, String> minStock;
 
     @FXML
-    private TableColumn<Material, Integer> stock;
+    private TableColumn<Material, String> stock;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -40,8 +41,12 @@ public class MaterialListController implements Initializable {
         setTableData();
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        minStock.setCellValueFactory(new PropertyValueFactory<>("minStock"));
-        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        minStock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
+                cellData.getValue().getMinStock() + " " + cellData.getValue().getMeasure().getName()));
+
+        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
+                cellData.getValue().getStock() + " " + cellData.getValue().getMeasure().getName()));
     }
 
     public void init(Stage stage) {

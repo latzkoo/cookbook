@@ -28,18 +28,7 @@ public class MaterialDAOImpl implements MaterialDAO {
                     (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY name");
 
             while(result.next()) {
-                Material material = new Material();
-                material.setId(result.getInt("id"));
-                material.setMeasureId(result.getInt("measureId"));
-                material.setName(result.getString("name"));
-                material.setOfficialMeasureId(result.getInt("officialMeasureId"));
-                material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
-                material.setMinStock(result.getInt("minStock"));
-                material.setStock(result.getInt("stock"));
-
-                material.setMeasure(measureDAO.findById(material.getMeasureId()));
-                material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
-
+                Material material = setMaterial(result);
                 materials.add(material);
             }
 
@@ -62,18 +51,7 @@ public class MaterialDAOImpl implements MaterialDAO {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                Material material = new Material();
-                material.setId(result.getInt("id"));
-                material.setMeasureId(result.getInt("measureId"));
-                material.setName(result.getString("name"));
-                material.setOfficialMeasureId(result.getInt("officialMeasureId"));
-                material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
-                material.setMinStock(result.getInt("minStock"));
-                material.setStock(result.getInt("stock"));
-
-                material.setMeasure(measureDAO.findById(material.getMeasureId()));
-                material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
-
+                Material material = setMaterial(result);
                 statement.close();
 
                 return material;
@@ -86,6 +64,24 @@ public class MaterialDAOImpl implements MaterialDAO {
         return null;
     }
 
+    private Material setMaterial(ResultSet result) throws SQLException {
+        Material material = new Material();
+        material.setId(result.getInt("id"));
+        material.setMeasureId(result.getInt("measureId"));
+        material.setName(result.getString("name"));
+        material.setCustomMeasureId(result.getInt("customMeasureId"));
+        material.setOfficialMeasureId(result.getInt("officialMeasureId"));
+        material.setOfficialMeasureUnit(result.getInt("officialMeasureUnit"));
+        material.setMinStock(result.getInt("minStock"));
+        material.setStock(result.getInt("stock"));
+
+        material.setMeasure(measureDAO.findById(material.getMeasureId()));
+        material.setCustomMeasure(measureDAO.findById(material.getCustomMeasureId()));
+        material.setOfficialMeasure(measureDAO.findById(material.getOfficialMeasureId()));
+
+        return material;
+    }
+
     @Override
     public Material save(Material material) {
         try {
@@ -95,33 +91,40 @@ public class MaterialDAOImpl implements MaterialDAO {
 
             if (material.getId() <= 0) {
                 statement = conn.prepareStatement("INSERT INTO material " +
-                        "(measureId, name, officialMeasureUnit, officialMeasureId, minStock)" +
-                        "VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                        "(measureId, name, customMeasureId, officialMeasureUnit, officialMeasureId, minStock)" +
+                        "VALUES (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             } else {
                 statement = conn.prepareStatement("UPDATE material SET " +
-                        "measureId=?, name=?, officialMeasureUnit=?, " +
+                        "measureId=?, name=?, customMeasureId=?, officialMeasureUnit=?, " +
                         "officialMeasureId=?, minStock=? WHERE id=?");
-                statement.setInt(6, material.getId());
+                statement.setInt(7, material.getId());
             }
 
             statement.setInt(1, material.getMeasure().getId());
             statement.setString(2, material.getName());
 
-            if (material.getOfficialMeasureUnit() != 0) {
-                statement.setInt(3, material.getOfficialMeasureUnit());
+            if (material.getCustomMeasure() != null) {
+                statement.setInt(3, material.getCustomMeasure().getId());
             }
             else {
                 statement.setNull(3, java.sql.Types.INTEGER);
             }
 
-            if (material.getOfficialMeasure() != null) {
-                statement.setInt(4, material.getOfficialMeasure().getId());
+            if (material.getOfficialMeasureUnit() != 0) {
+                statement.setInt(4, material.getOfficialMeasureUnit());
             }
             else {
                 statement.setNull(4, java.sql.Types.INTEGER);
             }
 
-            statement.setDouble(5, material.getMinStock());
+            if (material.getOfficialMeasure() != null) {
+                statement.setInt(5, material.getOfficialMeasure().getId());
+            }
+            else {
+                statement.setNull(5, java.sql.Types.INTEGER);
+            }
+
+            statement.setDouble(6, material.getMinStock());
 
 
             int affectedRows = statement.executeUpdate();

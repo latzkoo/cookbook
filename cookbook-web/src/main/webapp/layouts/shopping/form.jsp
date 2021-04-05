@@ -19,7 +19,7 @@
                                     <div class="font-weight-bold">
                                         <c:choose>
                                             <c:when test="${param.success.equals('add')}">A bevásárlás hozzáadása sikeres.
-                                                <a href="${pageContext.request.contextPath}/shopping/remove?materialId=${param.materialId}&stock=${param.stock}">Visszavonás</a>
+                                                <a href="${pageContext.request.contextPath}/shopping/remove?materialId=${param.materialId}&measureId=${param.measureId}&qty=${param.qty}">Visszavonás</a>
                                             </c:when>
                                             <c:when test="${param.success.equals('remove')}">A bevásárlás visszavonása sikeres.</c:when>
                                         </c:choose>
@@ -38,7 +38,7 @@
 
                     <div class="row pt-3">
                         <div class="col-12 py-2 px-0">
-                            <div class="form-row">
+                            <div class="form-row row-item">
                                 <div class="col-12 col-md-6 px-md-2">
                                     <div class="form-row">
                                         <div class="form-group col-12">
@@ -47,21 +47,33 @@
                                                     id="shoppingMaterial" required="required">
                                                 <option value="" disabled="disabled" selected="selected">Válasszon!</option>
                                                 <c:forEach items="${requestScope.materials}" var="material">
-                                                    <option data-measure="${material.getMeasure().getName()}"
-                                                            value="<c:out value="${material.getId()}"/>"
-                                                            <c:if test="${item.getMaterial().getId() == material.getId()}">
-                                                                selected="selected"</c:if>><c:out value="${material.getName()}" /></option>
+                                                    <option value="<c:out value="${material.getId()}"/>"
+                                                            data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
+                                                            data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
+                                                            data-mi="<c:out value="${material.getMeasure().getId()}"/>">
+                                                        <c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-6 px-2">
-                                    <label for="stock">Mennyiség</label>
-                                    <input type="number" class="form-control numeric input-unit" id="stock"
-                                           name="stock" required="required" value="" min="1" />
-                                    <div class="measure">g</div>
+                                <div class="form-group col-md-3 px-2">
+                                    <label for="qty">Mennyiség</label>
+                                    <input type="number" class="form-control numeric" id="qty"
+                                           name="qty" required="required" value="" min="1" />
+                                </div>
+
+                                <div class="form-group col-md-3 px-2">
+                                    <label for="measureId">Mennyiségi egység</label>
+                                    <select class="form-control" name="measureId"
+                                            id="measureId" required="required">
+                                        <option value="" disabled="disabled" selected="selected">Válasszon!</option>
+                                        <c:forEach items="${requestScope.measures}" var="measure">
+                                            <option value="<c:out value="${measure.getId()}"/>"
+                                                    data-category="<c:out value="${measure.getCategoryId()}"/>"><c:out value="${measure.getName()}"/></option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                         </div>

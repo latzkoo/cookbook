@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane onKeyPressed="#onKeyPressed" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/11"
-            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="hu.latzkoo.cookbook.controller.MaterialFormController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
@@ -39,32 +30,35 @@
                   <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Megnevezés" />
                   <Label text="Mértékegység" GridPane.rowIndex="1" />
-                  <Label text="Átváltás hivatalos mértékegységre" GridPane.rowIndex="2" />
-                  <Label text="Minimális mennyiség" GridPane.rowIndex="3" />
+                  <Label text="További mértékegység" GridPane.rowIndex="2" />
+                  <Label text="Átváltás hivatalos mértékegységre" GridPane.rowIndex="3" />
+                  <Label text="Minimális mennyiség" GridPane.rowIndex="4" />
                   <TextField fx:id="name" GridPane.columnIndex="1" />
                   <ComboBox fx:id="measures" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <ComboBox fx:id="customMeasures" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                        <children>
-                           <TextField fx:id="officialMeasureUnit" prefWidth="120.0" disable="true" />
+                           <TextField fx:id="officialMeasureUnit" disable="true" prefWidth="120.0" />
                            <ComboBox fx:id="officialMeasures" disable="true" />
                        </children>
                        <GridPane.margin>
                            <Insets top="12.0" />
                        </GridPane.margin>
                   </HBox>
-                  <TextField fx:id="minStock" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10 0 0 0;" GridPane.rowIndex="4">
+                  <TextField fx:id="minStock" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-padding: 10 0 0 0;" GridPane.rowIndex="5">
                        <children>
-                           <Button fx:id="btnSave" styleClass="btn-primary" mnemonicParsing="false" onAction="#onSave" text="Mentés">
+                           <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onSave" styleClass="btn-primary" text="Mentés">
                                <HBox.margin>
                                    <Insets right="10.0" />
                                </HBox.margin></Button>
-                           <Button styleClass="btn-light" mnemonicParsing="false" onAction="#onCancel" text="Mégsem" />
+                           <Button mnemonicParsing="false" onAction="#onCancel" styleClass="btn-light" text="Mégsem" />
                        </children>
                   </HBox>
                </children>

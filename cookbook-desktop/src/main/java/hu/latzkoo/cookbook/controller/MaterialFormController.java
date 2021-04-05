@@ -7,7 +7,10 @@ import hu.latzkoo.cookbook.dao.MeasureDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import hu.latzkoo.cookbook.model.TypeConverter;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -33,6 +36,9 @@ public class MaterialFormController {
     private ComboBox<Measure> measures;
 
     @FXML
+    private ComboBox<Measure> customMeasures;
+
+    @FXML
     private ComboBox<Measure> officialMeasures;
 
     @FXML
@@ -52,14 +58,25 @@ public class MaterialFormController {
 
         name.textProperty().setValue(material.nameProperty().getValue());
         measures.valueProperty().bindBidirectional(material.measureProperty());
-        measures.setItems(FXCollections.observableArrayList(measureList));
+        measures.setItems(FXCollections.observableArrayList(
+                measureList.stream()
+                        .filter(m -> m.getCategoryId() != 3)
+                        .collect(Collectors.toList())));
 
-        if (material.getMeasureId() > 0) {
-            Measure measure = material.getMeasure();
-            measures.getSelectionModel().select(measure);
+        customMeasures.valueProperty().bindBidirectional(material.customMeasureProperty());
+
+        ObservableList<Measure> ml = FXCollections.observableArrayList(measureList.stream()
+                        .filter(m -> m.getCategoryId() == 3)
+                        .collect(Collectors.toList()));
+        ml.add(0, new Measure());
+        customMeasures.setItems(ml);
+
+        if (material.getCustomMeasureId() > 0) {
+            Measure customMeasure = material.getCustomMeasure();
+            customMeasures.getSelectionModel().select(customMeasure);
 
             // Set additional fields status
-            changeAdditionalFieldsStatus(measure.getCategoryId());
+            changeAdditionalFieldsStatus(customMeasure);
         }
 
         officialMeasures.valueProperty().bindBidirectional(material.officialMeasureProperty());
@@ -74,9 +91,9 @@ public class MaterialFormController {
         }
 
         // Measure change event
-        measures.setOnAction(event -> {
-            Measure selectedMeasure = measures.getSelectionModel().getSelectedItem();
-            changeAdditionalFieldsStatus(selectedMeasure.getCategoryId());
+        customMeasures.setOnAction(event -> {
+            Measure selectedCustomMeasure = customMeasures.getSelectionModel().getSelectedItem();
+            changeAdditionalFieldsStatus(selectedCustomMeasure);
         });
 
         officialMeasureUnit.textProperty().bindBidirectional(
@@ -86,19 +103,43 @@ public class MaterialFormController {
             officialMeasureUnit.setText(null);
         }
 
+        // Allow only number
+        officialMeasureUnit.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                officialMeasureUnit.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
         minStock.textProperty().bindBidirectional(material.minStockProperty(), new TypeConverter());
 
         if (material.getMinStock() == 0) {
             minStock.setText(null);
         }
 
-        btnSave.disableProperty().bind(name.textProperty().isEmpty()
+        // Allow only number
+        minStock.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                minStock.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        btnSave.disableProperty().bind(((customMeasures.valueProperty().isNull()
+                .or(customMeasures.valueProperty().asString().isEqualTo("")))
+                .and(name.textProperty().isEmpty()
                 .or(measures.valueProperty().isNull()
-                .or(minStock.textProperty().isEmpty())));
+                .or(minStock.textProperty().isEmpty()))))
+                .or((customMeasures.valueProperty().isNotNull()
+                .and(customMeasures.valueProperty().asString().isNotEqualTo("")))
+                .and(name.textProperty().isEmpty()
+                .or(measures.valueProperty().isNull()
+                .or(officialMeasureUnit.textProperty().isEmpty()
+                .or(officialMeasures.valueProperty().isNull()
+                .or(minStock.textProperty().isEmpty()))))))
+        );
     }
 
-    private void changeAdditionalFieldsStatus(int categoryId) {
-        if (categoryId == 3) {
+    private void changeAdditionalFieldsStatus(Measure customMeasure) {
+        if (customMeasure != null && customMeasure.getId() > 0) {
             officialMeasures.setDisable(false);
             officialMeasureUnit.setDisable(false);
         }
@@ -133,17 +174,15 @@ public class MaterialFormController {
     private void save() {
         material.setName(name.getText());
 
-        Measure measure = measures.getSelectionModel().getSelectedItem();
-        material.setMeasure(measure);
-
-        Measure officialMeasure = officialMeasures.getSelectionModel().getSelectedItem();
-        material.setOfficialMeasure(officialMeasure);
+        material.setMeasure(measures.getSelectionModel().getSelectedItem());
+        material.setCustomMeasure(customMeasures.getSelectionModel().getSelectedItem());
+        material.setOfficialMeasure(officialMeasures.getSelectionModel().getSelectedItem());
         material.setMinStock(Integer.parseInt(minStock.getText()));
 
         material = materialDAO.save(material);
 
         parent.setMaterials(materialDAO.findAll(false));
-        parent.setTableData();
+        parent.onSearch();
         parent.setMaterialAlertMessage();
         closeModal();
     }

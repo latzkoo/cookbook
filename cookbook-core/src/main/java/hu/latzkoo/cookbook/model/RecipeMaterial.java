@@ -1,9 +1,6 @@
 package hu.latzkoo.cookbook.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 
 public class RecipeMaterial {
 
@@ -11,6 +8,7 @@ public class RecipeMaterial {
     private ObjectProperty<Material> material = new SimpleObjectProperty<>(this, "material");
     private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
     private IntegerProperty unit = new SimpleIntegerProperty(this, "unit");
+    private DoubleProperty requiredUnit = new SimpleDoubleProperty(this, "requiredUnit");
 
     public int getRecipeId() {
         return recipeId.get();
@@ -58,5 +56,17 @@ public class RecipeMaterial {
 
     public void setUnit(int unit) {
         this.unit.set(unit);
+    }
+
+    public double getRequiredUnit() {
+        return requiredUnit.get();
+    }
+
+    public DoubleProperty requiredUnitProperty() {
+        return requiredUnit;
+    }
+
+    public void setRequiredUnit(double requiredUnit) {
+        this.requiredUnit.set(requiredUnit);
     }
 }

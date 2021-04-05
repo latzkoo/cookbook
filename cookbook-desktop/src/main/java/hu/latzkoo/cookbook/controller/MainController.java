@@ -6,6 +6,7 @@ import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -45,10 +46,10 @@ public class MainController implements Initializable {
     private TableColumn<Material, String> name;
 
     @FXML
-    private TableColumn<Material, Integer> minStock;
+    private TableColumn<Material, String> minStock;
 
     @FXML
-    private TableColumn<Material, Integer> stock;
+    private TableColumn<Material, String> stock;
 
     @FXML
     private TableColumn<Material, Void> operations;
@@ -74,13 +75,13 @@ public class MainController implements Initializable {
         materials = materialDAO.findAll(false);
         setTableData();
 
-        measure.setCellValueFactory(new PropertyValueFactory<>("measure"));
-
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        minStock.setCellValueFactory(new PropertyValueFactory<>("minStock"));
-        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        operations.setCellFactory(param -> new TableCell<>(){
+        minStock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
+                cellData.getValue().getMinStock() + " " + cellData.getValue().getMeasure().getName()));
+        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
+                cellData.getValue().getStock() + " " + cellData.getValue().getMeasure().getName()));
 
+        operations.setCellFactory(param -> new TableCell<>(){
             private final Button btnEdit = new Button();
             private final Button btnDelete = new Button();
 

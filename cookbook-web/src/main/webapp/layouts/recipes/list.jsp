@@ -80,6 +80,12 @@
                             <td class="fix150">${recipe.getCreatedAt()}</td>
                             <td>
                                 <div class="operations">
+                                    <button type="button" class="btn btn-operations-small btn-success ml-1 button-cooking"
+                                            data-name="${recipe.getName()}" data-id="${recipe.getId()}" title="Elkészítem">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
+                                            <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
+                                        </svg>
+                                    </button>
                                     <a href="${pageContext.request.contextPath}/recipes/edit?id=<c:out value="${recipe.getId()}"/>">
                                         <button type="button" class="btn btn-operations-small btn-secondary ml-1" title="Szerkesztés">
                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +112,7 @@
         </section>
     </main>
 
-    <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -123,6 +129,33 @@
                     <a id="link-delete" href="${pageContext.request.contextPath}">
                         <button type="button" class="btn btn-sm btn-danger">Törlés</button></a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="cookingModal" tabindex="-1" aria-labelledby="cookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formCookingRecipe" action="${pageContext.request.contextPath}/cooking/recipe" method="post">
+                    <input type="hidden" name="recipeId" value="" />
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cookingModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="numberOfPersons" class="col-form-label">Adag (fő):</label>
+                            <input type="number" class="form-control numeric" name="numberOfPersons"
+                                   id="numberOfPersons" value="4" min="1" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                        <button type="button" class="btn btn-success" id="cookIt">Elkészítem</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

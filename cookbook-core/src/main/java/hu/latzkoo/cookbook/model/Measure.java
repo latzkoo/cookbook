@@ -4,10 +4,10 @@ import javafx.beans.property.*;
 
 public class Measure {
 
-    private IntegerProperty id = new SimpleIntegerProperty(this, "id");
-    private StringProperty name = new SimpleStringProperty(this, "name");
-    private IntegerProperty categoryId = new SimpleIntegerProperty(this, "categoryId");
-    private IntegerProperty multiplier = new SimpleIntegerProperty(this, "multiplier");
+    private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
+    private final StringProperty name = new SimpleStringProperty(this, "name");
+    private final IntegerProperty categoryId = new SimpleIntegerProperty(this, "categoryId");
+    private final IntegerProperty multiplier = new SimpleIntegerProperty(this, "multiplier");
 
     public Measure() {
     }

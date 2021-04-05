@@ -4,15 +4,18 @@ import javafx.beans.property.*;
 
 public class Material {
 
-    private IntegerProperty id = new SimpleIntegerProperty(this, "id");
-    private IntegerProperty measureId = new SimpleIntegerProperty(this, "measureId");
-    private StringProperty name = new SimpleStringProperty(this, "name");
-    private ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
-    private IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
-    private IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
-    private IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
-    private IntegerProperty stock = new SimpleIntegerProperty(this, "stock");
-    private ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
+    private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
+    private final IntegerProperty measureId = new SimpleIntegerProperty(this, "measureId");
+    private final StringProperty name = new SimpleStringProperty(this, "name");
+    private final ObjectProperty<Measure> measure = new SimpleObjectProperty<>(this, "measure");
+    private final IntegerProperty officialMeasureUnit = new SimpleIntegerProperty(this, "officialMeasureUnit");
+    private final IntegerProperty officialMeasureId = new SimpleIntegerProperty(this, "officialMeasureId");
+    private final IntegerProperty customMeasureId = new SimpleIntegerProperty(this, "customMeasureId");
+    private final IntegerProperty minStock = new SimpleIntegerProperty(this, "minStock");
+    private final IntegerProperty stock = new SimpleIntegerProperty(this, "stock");
+    private final ObjectProperty<Measure> customMeasure = new SimpleObjectProperty<>(this, "customMeasure");
+    private final ObjectProperty<Measure> officialMeasure = new SimpleObjectProperty<>(this, "officialMeasure");
+    private final DoubleProperty measureUnit = new SimpleDoubleProperty(this, "measureUnit");
 
     public Material() {
     }
@@ -93,6 +96,18 @@ public class Material {
         this.officialMeasureId.set(officialMeasureId);
     }
 
+    public int getCustomMeasureId() {
+        return customMeasureId.get();
+    }
+
+    public IntegerProperty customMeasureIdProperty() {
+        return customMeasureId;
+    }
+
+    public void setCustomMeasureId(int customMeasureId) {
+        this.customMeasureId.set(customMeasureId);
+    }
+
     public int getMinStock() {
         return minStock.get();
     }
@@ -117,6 +132,18 @@ public class Material {
         this.stock.set(stock);
     }
 
+    public Measure getCustomMeasure() {
+        return customMeasure.get();
+    }
+
+    public ObjectProperty<Measure> customMeasureProperty() {
+        return customMeasure;
+    }
+
+    public void setCustomMeasure(Measure customMeasure) {
+        this.customMeasure.set(customMeasure);
+    }
+
     public Measure getOfficialMeasure() {
         return officialMeasure.get();
     }
@@ -127,5 +154,17 @@ public class Material {
 
     public void setOfficialMeasure(Measure officialMeasure) {
         this.officialMeasure.set(officialMeasure);
+    }
+
+    public double getMeasureUnit() {
+        return measureUnit.get();
+    }
+
+    public DoubleProperty measureUnitProperty() {
+        return measureUnit;
+    }
+
+    public void setMeasureUnit(double measureUnit) {
+        this.measureUnit.set(measureUnit);
     }
 }

@@ -1,6 +1,8 @@
 package hu.latzkoo.cookbook.controller;
 
 import hu.latzkoo.cookbook.dao.*;
+import hu.latzkoo.cookbook.model.Material;
+import hu.latzkoo.cookbook.model.Measure;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,9 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/shopping/", "/shopping"})
 public class ShoppingController extends HttpServlet {
 
+    private final MaterialDAO materialDAO = new MaterialDAOImpl();
+    private final MeasureDAO measureDAO = new MeasureDAOImpl();
+
     /**
      * @param request
      * @param response
@@ -20,10 +25,7 @@ public class ShoppingController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MaterialDAO materialDAO = new MaterialDAOImpl();
         request.setAttribute("materials", materialDAO.findAll(false));
-
-        MeasureDAO measureDAO = new MeasureDAOImpl();
         request.setAttribute("measures", measureDAO.findAll());
 
         request.getRequestDispatcher("/layouts/shopping/form.jsp").forward(request, response);
@@ -31,14 +33,29 @@ public class ShoppingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!request.getParameter("materialId").isEmpty() && !request.getParameter("stock").isEmpty()) {
-            MaterialDAO materialDAO = new MaterialDAOImpl();
+        if (!request.getParameter("materialId").isEmpty() && !request.getParameter("qty").isEmpty() &&
+                !request.getParameter("measureId").isEmpty()) {
+            int materialId = Integer.parseInt(request.getParameter("materialId"));
+            int measureId = Integer.parseInt(request.getParameter("measureId"));
+            int qty = Integer.parseInt(request.getParameter("qty"));
 
-            materialDAO.updateStock("increase", Integer.parseInt(request.getParameter("materialId")),
-                    Integer.parseInt(request.getParameter("stock")));
+            Material material = materialDAO.findById(materialId);
 
-            response.sendRedirect(request.getContextPath() + "/shopping?success=add&materialId=" +
-                    request.getParameter("materialId") + "&stock=" + request.getParameter("stock"));
+            if (materialId > 0 && qty > 0 && measureId > 0) {
+                Measure measure = measureDAO.findById(material.getOfficialMeasureId() > 0 &&
+                        material.getMeasureId() == measureId ? material.getOfficialMeasureId() : measureId);
+                int unitQty = qty * measure.getMultiplier();
+
+                if (material.getOfficialMeasureId() > 0) {
+                    unitQty *= material.getOfficialMeasureUnit();
+                }
+
+                materialDAO.updateStock("increase", materialId, unitQty);
+
+                response.sendRedirect(request.getContextPath() + "/shopping?success=add&materialId=" +
+                        request.getParameter("materialId") + "&measureId=" + request.getParameter("measureId") + "&qty=" +
+                        request.getParameter("qty"));
+            }
         }
     }
 }
