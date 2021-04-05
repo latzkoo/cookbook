@@ -24,10 +24,10 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -39,9 +39,6 @@ public class MainController implements Initializable {
 
     @FXML
     private TableView<Material> materialTable;
-
-    @FXML
-    private TableColumn<Measure, String> measure;
 
     @FXML
     private TableColumn<Material, String> name;
@@ -79,8 +76,11 @@ public class MainController implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         minStock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
                 cellData.getValue().getMinStock() + " " + cellData.getValue().getMeasure().getName()));
-        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
-                cellData.getValue().getMeasureUnit() + " " + cellData.getValue().getMeasure().getName()));
+
+        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> {
+            DecimalFormat df = new DecimalFormat("#####.##");
+            return df.format(cellData.getValue().getMeasureUnit()) + " " + cellData.getValue().getMeasure().getName();
+        }));
 
         operations.setCellFactory(param -> new TableCell<>(){
             private final Button btnEdit = new Button();

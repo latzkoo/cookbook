@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -45,8 +46,10 @@ public class MaterialListController implements Initializable {
         minStock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
                 cellData.getValue().getMinStock() + " " + cellData.getValue().getMeasure().getName()));
 
-        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() ->
-                cellData.getValue().getStock() + " " + cellData.getValue().getMeasure().getName()));
+        stock.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> {
+            DecimalFormat df = new DecimalFormat("#####.##");
+            return df.format(cellData.getValue().getMeasureUnit()) + " " + cellData.getValue().getMeasure().getName();
+        }));
     }
 
     public void init(Stage stage) {

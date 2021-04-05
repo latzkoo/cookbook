@@ -95,6 +95,7 @@ $(window).bind("load", function () {
 
         let measureId = parseInt(material.children("option:selected").data("mi"));
         let measureCategoryId = parseInt(material.children("option:selected").data("mc"));
+        let customMeasureId = parseInt(material.children("option:selected").data("mcustomi"));
         let officialMeasureCategoryId = parseInt(material.children("option:selected").data("mcofficial"));
         let measures = $("[name=measureId] option", row);
 
@@ -102,17 +103,15 @@ $(window).bind("load", function () {
             let id = parseInt($(this).val());
             let categoryId = parseInt($(this).data("category"));
 
-            return ($(this).val() === "" ||
-                (measureCategoryId === 3 && (categoryId === officialMeasureCategoryId || id === measureId)) ||
-                (measureCategoryId !== 3 && categoryId === measureCategoryId));
+            return ($(this).val() === "" || id === customMeasureId || categoryId === measureCategoryId);
         });
 
         if (selectFirst) {
             $("[name=measureId]", row).val("");
         }
 
-        measures.hide();
-        matchingListElements.show();
+        measures.attr("disabled", "disabled").hide();
+        matchingListElements.removeAttr("disabled").show();
     }
 
     $(document).on("change", "[name=materialId]", function() {

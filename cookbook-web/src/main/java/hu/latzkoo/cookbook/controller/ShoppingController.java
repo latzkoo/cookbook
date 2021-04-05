@@ -42,12 +42,13 @@ public class ShoppingController extends HttpServlet {
             Material material = materialDAO.findById(materialId);
 
             if (materialId > 0 && qty > 0 && measureId > 0) {
-                Measure measure = measureDAO.findById(material.getOfficialMeasureId() > 0 &&
-                        material.getMeasureId() == measureId ? material.getOfficialMeasureId() : measureId);
+                Measure measure = measureDAO.findById(material.getCustomMeasureId() > 0 &&
+                        material.getCustomMeasureId() == measureId ? material.getOfficialMeasureId() : measureId);
+
                 int unitQty = qty * measure.getMultiplier();
 
-                if (material.getOfficialMeasureId() > 0) {
-                    unitQty *= material.getOfficialMeasureUnit();
+                if (material.getCustomMeasureId() == measureId) {
+                    unitQty = qty * measure.getMultiplier() * material.getOfficialMeasureUnit();
                 }
 
                 materialDAO.updateStock("increase", materialId, unitQty);

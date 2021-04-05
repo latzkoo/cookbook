@@ -180,6 +180,7 @@
                                                         data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
                                                         data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
                                                         data-mi="<c:out value="${material.getMeasure().getId()}"/>"
+                                                        data-mcustomi="<c:out value="${material.getCustomMeasure().getId()}"/>"
                                                     <c:if test="${item.getMaterial().getId() == material.getId()}">
                                                         selected="selected"</c:if>><c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
@@ -226,7 +227,8 @@
                                                     <option value="<c:out value="${material.getId()}"/>"
                                                             data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
                                                             data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
-                                                            data-mi="<c:out value="${material.getMeasure().getId()}"/>">
+                                                            data-mi="<c:out value="${material.getMeasure().getId()}"/>"
+                                                            data-mcustomi="<c:out value="${material.getCustomMeasure().getId()}"/>">
                                                         <c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
