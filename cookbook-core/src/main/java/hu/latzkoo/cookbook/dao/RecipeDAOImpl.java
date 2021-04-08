@@ -65,6 +65,94 @@ public class RecipeDAOImpl implements RecipeDAO {
         return getRecipeList(q, pager);
     }
 
+    @Override
+    public List<Recipe> search(String name, String[] categoryIds, int levelId, int durationFrom, int durationTo) {
+        List<Recipe> recipes = new ArrayList<>();
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            int idx = 1;
+
+            StringBuilder query = new StringBuilder("SELECT r.id, r.name, r.duration, r.createdAt, " +
+                    "(SELECT count(rm.materialId) FROM recipe_material AS rm " +
+                    "WHERE recipeId=r.id) AS materials " +
+                    "FROM recipe AS r WHERE 1");
+
+            if (name != null && !name.isEmpty()) {
+                query.append(" AND (r.name LIKE ? OR r.customName LIKE ?)");
+            }
+
+            if (categoryIds != null && categoryIds.length > 0) {
+                query.append(" AND r.categoryId IN(");
+
+                for (int i = 0; i < categoryIds.length; i++) {
+                    if (i != 0) query.append(",");
+                    query.append('?');
+                }
+
+                query.append(")");
+            }
+
+            if (levelId > 0) {
+                query.append(" AND r.levelId=?");
+            }
+
+            if (durationFrom > 0) {
+                query.append(" AND r.duration>=?");
+            }
+
+            if (durationTo > 0) {
+                query.append(" AND r.duration<=?");
+            }
+
+            PreparedStatement statement = conn.prepareStatement(query.toString());
+
+            if (name != null && !name.isEmpty()) {
+                statement.setString(idx++, "%" + name + "%");
+                statement.setString(idx++, "%" + name + "%");
+            }
+
+            if (categoryIds != null && categoryIds.length > 0) {
+                for (String categoryId : categoryIds) {
+                    statement.setString(idx++, categoryId);
+                }
+            }
+
+            if (levelId > 0) {
+                statement.setInt(idx++, levelId);
+            }
+
+            if (durationFrom > 0) {
+                statement.setInt(idx++, durationFrom);
+            }
+
+            if (durationTo > 0) {
+                statement.setInt(idx, durationTo);
+            }
+
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()) {
+                Recipe recipe = new Recipe();
+                recipe.setId(result.getInt("id"));
+                recipe.setName(result.getString("name"));
+                recipe.setDuration(result.getInt("duration"));
+                recipe.setMaterialItems(result.getInt("materials"));
+                recipe.setCreatedAt(result.getString("createdAt"));
+
+                recipes.add(recipe);
+            }
+
+            statement.close();
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return recipes;
+    }
+
     private List<Recipe> getRecipeList(String q, Pager pager) {
         List<Recipe> recipes = new ArrayList<>();
 
@@ -73,18 +161,18 @@ public class RecipeDAOImpl implements RecipeDAO {
             Connection conn = DriverManager.getConnection(connectionURL);
             int idx = 1;
 
-            String query = "SELECT r.id, r.name, r.createdAt, " +
+            StringBuilder query = new StringBuilder("SELECT r.id, r.name, r.createdAt, " +
                     "(SELECT count(rm.materialId) FROM recipe_material AS rm WHERE recipeId=r.id) AS materials " +
-                    "FROM recipe AS r";
+                    "FROM recipe AS r");
 
             if (q != null) {
-                query += " WHERE r.name LIKE ? OR r.customName LIKE ?";
+                query.append(" WHERE r.name LIKE ? OR r.customName LIKE ?");
             }
             if (pager != null) {
-                query += " LIMIT ?, ?";
+                query.append(" LIMIT ?, ?");
             }
 
-            PreparedStatement statement = conn.prepareStatement(query);
+            PreparedStatement statement = conn.prepareStatement(query.toString());
 
             if (q != null) {
                 statement.setString(idx++, "%" + q + "%");

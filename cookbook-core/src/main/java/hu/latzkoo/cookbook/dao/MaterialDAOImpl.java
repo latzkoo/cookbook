@@ -152,7 +152,7 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
-    public void updateStock(String event, int id, int stock) {
+    public Material updateStock(String event, int id, int stock) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(connectionURL);
@@ -168,6 +168,8 @@ public class MaterialDAOImpl implements MaterialDAO {
         catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        return findById(id);
     }
 
     @Override

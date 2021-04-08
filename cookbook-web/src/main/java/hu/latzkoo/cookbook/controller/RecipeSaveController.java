@@ -70,7 +70,7 @@ public class RecipeSaveController extends HttpServlet {
         String[] measureIds = request.getParameterValues("measureId");
         String[] units = request.getParameterValues("unit");
 
-        if (recipe.getId() > 0 && request.getParameterValues("materialId").length > 0) {
+        if (recipe.getId() > 0 && materialIds.length > 0) {
             List<RecipeMaterial> recipeMaterials = new ArrayList<>();
 
             for (int i = 0; i < materialIds.length; i++) {

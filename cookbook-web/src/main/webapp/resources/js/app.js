@@ -93,13 +93,11 @@ $(window).bind("load", function () {
     function setMeasureSelect(row, selectFirst) {
         let material = $("[name=materialId]", row);
 
-        let measureId = parseInt(material.children("option:selected").data("mi"));
         let measureCategoryId = parseInt(material.children("option:selected").data("mc"));
         let customMeasureId = parseInt(material.children("option:selected").data("mcustomi"));
-        let officialMeasureCategoryId = parseInt(material.children("option:selected").data("mcofficial"));
         let measures = $("[name=measureId] option", row);
 
-        let matchingListElements = measures.filter(function(i, item) {
+        let matchingListElements = measures.filter(function() {
             let id = parseInt($(this).val());
             let categoryId = parseInt($(this).data("category"));
 
@@ -110,8 +108,8 @@ $(window).bind("load", function () {
             $("[name=measureId]", row).val("");
         }
 
-        measures.attr("disabled", "disabled").hide();
-        matchingListElements.removeAttr("disabled").show();
+        measures.hide();
+        matchingListElements.show();
     }
 
     $(document).on("change", "[name=materialId]", function() {
@@ -124,21 +122,21 @@ $(window).bind("load", function () {
         setMeasureSelect(row, false);
     });
 
-    // Cooking
-    $(document).on("click", ".button-cooking", function() {
+    // Prepare
+    $(document).on("click", ".button-prepare", function() {
         let recipeId = $(this).data("id");
         let recipeName = $(this).data("name");
 
         $("[name=recipeId]").val(recipeId);
-        $("#cookingModalLabel").html(recipeName + " elkészítése");
+        $("#prepareModalLabel").html(recipeName + " elkészítése");
 
-        $("#cookingModal").modal({
+        $("#prepareModal").modal({
             show: true,
             keyboard: true
         });
     });
 
-    $(document).on("click", "#cookIt", function() {
+    $(document).on("click", "#prepareIt", function() {
         let url = $("#formCookingRecipe").attr("action");
         let formData = $("#formCookingRecipe").serialize();
 
@@ -152,13 +150,40 @@ $(window).bind("load", function () {
             },
             success: function (data) {
                 $("body").prepend(data);
-                $("#cookingModal").modal("toggle");
-                $("#cookingMessageModal").modal({
+                $("#prepareModal").modal("toggle");
+                $("#prepareMessageModal").modal({
                     show: true,
                     keyboard: true
                 });
             }
         });
+    });
+
+    // Show recipe
+    $(document).on("click", ".button-show", function() {
+        let href = $(this).data("href");
+
+        $.ajax({
+            url: href,
+            type: 'get',
+            headers: {},
+            data: {},
+            dataType: 'text',
+            beforeSend: function () {
+            },
+            success: function (data) {
+                $("body").prepend(data);
+                $("#showRecipeModal").modal({
+                    show: true,
+                    keyboard: true
+                });
+            }
+        });
+    });
+
+    //list filter
+    $(document).on("change", ".autosend", function() {
+        $('[name=filter]').submit();
     });
 
 });

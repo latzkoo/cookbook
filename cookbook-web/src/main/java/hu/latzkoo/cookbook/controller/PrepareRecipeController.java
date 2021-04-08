@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/cooking/recipe"})
+@WebServlet(urlPatterns = {"/prepare/recipe"})
 public class PrepareRecipeController extends HttpServlet {
 
     private final RecipeService recipeService = new RecipeService();
@@ -37,7 +37,8 @@ public class PrepareRecipeController extends HttpServlet {
             }
             // Prepare the food
             else {
-//                recipeService.prepare();
+                List<RecipeMaterial> belowMinimumStockMaterials = recipeService.prepare(numberOfPersons);
+                request.setAttribute("belowMinimumStockMaterials", belowMinimumStockMaterials);
             }
 
             request.getRequestDispatcher("/layouts/recipes/message.jsp").forward(request, response);

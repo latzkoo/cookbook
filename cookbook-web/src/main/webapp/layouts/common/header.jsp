@@ -10,14 +10,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item ml-md-3">
+                    <li class="nav-item dropdown ml-md-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Keresés</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown02">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/search">Egyszerű keresés</a>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/search/persons">Készlet keresés</a>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-md-4">
                         <a class="nav-link" href="${pageContext.request.contextPath}/recipes">Receptek</a></li>
                     <li class="nav-item ml-md-3">
                         <a class="nav-link" href="${pageContext.request.contextPath}/menus">Menük</a></li>
                     <li class="nav-item ml-md-3">
                         <a class="nav-link" href="${pageContext.request.contextPath}/shopping">Bevásárlás</a></li>
                     <li class="nav-item ml-md-3">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/cooking">Főzés</a></li>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/prepare">Főzés</a></li>
                 </ul>
             </div>
         </nav>

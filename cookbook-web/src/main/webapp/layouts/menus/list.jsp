@@ -80,6 +80,12 @@
                             <td class="fix150">${menu.getCreatedAt()}</td>
                             <td>
                                 <div class="operations">
+                                    <button type="button" class="btn btn-operations-small btn-info ml-1 button-show" title="Megtekintés"
+                                            data-href="${pageContext.request.contextPath}/menus/show?id=<c:out value="${menu.getId()}"/>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
                                     <a href="${pageContext.request.contextPath}/menus/edit?id=<c:out value="${menu.getId()}"/>">
                                         <button type="button" class="btn btn-operations-small btn-secondary ml-1" title="Szerkesztés">
                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -6,19 +6,19 @@ import java.util.List;
 
 public class Recipe {
 
-    private IntegerProperty id = new SimpleIntegerProperty(this, "id");
-    private IntegerProperty categoryId = new SimpleIntegerProperty(this, "categoryId");
-    private ObjectProperty<RecipeCategory> recipeCategory = new SimpleObjectProperty<>(this, "recipeCategory");
-    private StringProperty name = new SimpleStringProperty(this, "name");
-    private StringProperty customName = new SimpleStringProperty(this, "customName");
-    private StringProperty description = new SimpleStringProperty(this, "description");
-    private SimpleIntegerProperty levelId = new SimpleIntegerProperty(this, "levelId");
-    private ObjectProperty<RecipeLevel> recipeLevel = new SimpleObjectProperty<>(this, "recipeLevel");
-    private SimpleIntegerProperty duration = new SimpleIntegerProperty(this, "duration");
-    private SimpleIntegerProperty numberOfPersons = new SimpleIntegerProperty(this, "numberOfPersons");
-    private StringProperty image = new SimpleStringProperty(this, "image");
-    private StringProperty createdAt = new SimpleStringProperty(this, "createdAt");
-    private IntegerProperty materialItems = new SimpleIntegerProperty(this, "materialItems");
+    private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
+    private final IntegerProperty categoryId = new SimpleIntegerProperty(this, "categoryId");
+    private final ObjectProperty<RecipeCategory> recipeCategory = new SimpleObjectProperty<>(this, "recipeCategory");
+    private final StringProperty name = new SimpleStringProperty(this, "name");
+    private final StringProperty customName = new SimpleStringProperty(this, "customName");
+    private final StringProperty description = new SimpleStringProperty(this, "description");
+    private final SimpleIntegerProperty levelId = new SimpleIntegerProperty(this, "levelId");
+    private final ObjectProperty<RecipeLevel> recipeLevel = new SimpleObjectProperty<>(this, "recipeLevel");
+    private final SimpleIntegerProperty duration = new SimpleIntegerProperty(this, "duration");
+    private final SimpleIntegerProperty numberOfPersons = new SimpleIntegerProperty(this, "numberOfPersons");
+    private final StringProperty image = new SimpleStringProperty(this, "image");
+    private final StringProperty createdAt = new SimpleStringProperty(this, "createdAt");
+    private final IntegerProperty materialItems = new SimpleIntegerProperty(this, "materialItems");
     private List<RecipeMaterial> materials = new ArrayList<>();
 
     public int getId() {

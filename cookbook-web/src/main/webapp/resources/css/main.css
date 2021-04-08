@@ -111,3 +111,30 @@ label {
     width: 100px;
     margin: 9px 0 0 10px;
 }
+
+.recipe-description dl,
+.recipe-description ol,
+.recipe-materials ul,
+.recipe-description ul {
+    padding-left: 15px;
+    margin-top: 15px;
+}
+.recipe-description ol li,
+.recipe-description ul li {
+    margin-bottom: 10px;
+}
+.custom-control.categories {
+    float: left;
+    margin-right: 15px;
+}
+.label {
+    margin-bottom: 15px;
+    cursor: default;
+}
+.input-rounded-left {
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+.select-filter {
+    margin: -4px 0 0 5px;
+}

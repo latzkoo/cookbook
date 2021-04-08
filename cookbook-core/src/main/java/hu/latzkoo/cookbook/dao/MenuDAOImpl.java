@@ -60,20 +60,20 @@ public class MenuDAOImpl implements MenuDAO {
             Connection conn = DriverManager.getConnection(connectionURL);
             int idx = 1;
 
-            String query = "SELECT m.id, m.name, m.duration, m.createdAt, " +
+            StringBuilder query = new StringBuilder("SELECT m.id, m.name, m.duration, m.createdAt, " +
                     "(SELECT COUNT(mr.menuId) FROM menu_recipe AS mr WHERE menuId=m.id) AS recipes " +
-                    "FROM menu AS m";
+                    "FROM menu AS m");
 
             if (q != null) {
-                query += " WHERE m.name LIKE ?";
+                query.append(" WHERE m.name LIKE ?");
             }
             if (pager != null) {
-                query += " LIMIT ?, ?";
+                query.append(" LIMIT ?, ?");
             }
 
             PreparedStatement statement = conn.prepareStatement("PRAGMA foreign_keys = ON");
             statement.executeUpdate();
-            statement = conn.prepareStatement(query);
+            statement = conn.prepareStatement(query.toString());
 
             if (q != null) {
                 statement.setString(idx++, "%" + q + "%");
@@ -87,13 +87,7 @@ public class MenuDAOImpl implements MenuDAO {
             ResultSet result = statement.executeQuery();
 
             while(result.next()) {
-                Menu menu = new Menu();
-                menu.setId(result.getInt("id"));
-                menu.setName(result.getString("name"));
-                menu.setRecipeItems(result.getInt("recipes"));
-                menu.setDuration(result.getInt("duration"));
-                menu.setCreatedAt(result.getString("createdAt"));
-
+                Menu menu = setMenu(result);
                 menus.add(menu);
             }
 
@@ -104,6 +98,74 @@ public class MenuDAOImpl implements MenuDAO {
         }
 
         return menus;
+    }
+
+    @Override
+    public List<Menu> search(String name, int durationFrom, int durationTo) {
+        List<Menu> menus = new ArrayList<>();
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            int idx = 1;
+
+            StringBuilder query = new StringBuilder("SELECT m.id, m.name, m.duration, m.createdAt, " +
+                    "(SELECT COUNT(mr.menuId) FROM menu_recipe AS mr WHERE menuId=m.id) AS recipes " +
+                    "FROM menu AS m WHERE 1");
+
+            if (name != null && !name.isEmpty()) {
+                query.append(" AND m.name LIKE ?");
+            }
+
+            if (durationFrom > 0) {
+                query.append(" AND m.duration>=?");
+            }
+
+            if (durationTo > 0) {
+                query.append(" AND m.duration<=?");
+            }
+
+            PreparedStatement statement = conn.prepareStatement("PRAGMA foreign_keys = ON");
+            statement.executeUpdate();
+            statement = conn.prepareStatement(query.toString());
+
+            if (name != null && !name.isEmpty()) {
+                statement.setString(idx++, "%" + name + "%");
+            }
+
+            if (durationFrom > 0) {
+                statement.setInt(idx++, durationFrom);
+            }
+
+            if (durationTo > 0) {
+                statement.setInt(idx, durationTo);
+            }
+
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()) {
+                Menu menu = setMenu(result);
+                menus.add(menu);
+            }
+
+            statement.close();
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return menus;
+    }
+
+    private Menu setMenu(ResultSet result) throws SQLException {
+        Menu menu = new Menu();
+        menu.setId(result.getInt("id"));
+        menu.setName(result.getString("name"));
+        menu.setRecipeItems(result.getInt("recipes"));
+        menu.setDuration(result.getInt("duration"));
+        menu.setCreatedAt(result.getString("createdAt"));
+
+        return menu;
     }
 
     @Override

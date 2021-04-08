@@ -1,7 +1,10 @@
 package hu.latzkoo.cookbook.service;
 
+import hu.latzkoo.cookbook.dao.MaterialDAO;
+import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.dao.MeasureDAO;
 import hu.latzkoo.cookbook.dao.MeasureDAOImpl;
+import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
 import hu.latzkoo.cookbook.model.Recipe;
 import hu.latzkoo.cookbook.model.RecipeMaterial;
@@ -12,6 +15,7 @@ import java.util.List;
 public class RecipeService {
 
     private Recipe recipe;
+    private final MaterialDAO materialDAO = new MaterialDAOImpl();
     private final MeasureDAO measureDAO = new MeasureDAOImpl();
 
     public RecipeService() {
@@ -75,6 +79,15 @@ public class RecipeService {
 
             double unitPerPerson = getUnitPerPerson(recipeMaterial, measure);
             double unitInDefaultMeasure = unitPerPerson * numberOfPersons;
+
+            Material material = materialDAO.updateStock("decrease", recipeMaterial.getMaterial().getId(), (int) unitInDefaultMeasure);
+
+            material.setStock(material.getStock() / measure.getMultiplier());
+
+            if (material.getStock() < material.getMinStock()) {
+                recipeMaterial.setMaterial(material);
+                belowMinimumStockMaterials.add(recipeMaterial);
+            }
         }
 
         return belowMinimumStockMaterials;

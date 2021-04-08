@@ -80,7 +80,13 @@
                             <td class="fix150">${recipe.getCreatedAt()}</td>
                             <td>
                                 <div class="operations">
-                                    <button type="button" class="btn btn-operations-small btn-success ml-1 button-cooking"
+                                    <button type="button" class="btn btn-operations-small btn-info ml-1 button-show" title="Megtekintés"
+                                            data-href="${pageContext.request.contextPath}/recipes/show?id=<c:out value="${recipe.getId()}"/>">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-operations-small btn-success ml-1 button-prepare"
                                             data-name="${recipe.getName()}" data-id="${recipe.getId()}" title="Elkészítem">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16">
                                             <path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/>
@@ -133,13 +139,13 @@
         </div>
     </div>
 
-    <div class="modal" id="cookingModal" tabindex="-1" aria-labelledby="cookingModalLabel" aria-hidden="true">
+    <div class="modal" id="prepareModal" tabindex="-1" aria-labelledby="prepareModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="formCookingRecipe" action="${pageContext.request.contextPath}/cooking/recipe" method="post">
+                <form id="formCookingRecipe" action="${pageContext.request.contextPath}/prepare/recipe" method="post">
                     <input type="hidden" name="recipeId" value="" />
                     <div class="modal-header">
-                        <h5 class="modal-title" id="cookingModalLabel"></h5>
+                        <h5 class="modal-title" id="prepareModalLabel"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -153,7 +159,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
-                        <button type="button" class="btn btn-success" id="cookIt">Elkészítem</button>
+                        <button type="button" class="btn btn-success" id="prepareIt">Elkészítem</button>
                     </div>
                 </form>
             </div>
