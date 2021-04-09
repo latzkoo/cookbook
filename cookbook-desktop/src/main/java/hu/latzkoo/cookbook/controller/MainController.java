@@ -4,7 +4,6 @@ import hu.latzkoo.cookbook.App;
 import hu.latzkoo.cookbook.dao.MaterialDAO;
 import hu.latzkoo.cookbook.dao.MaterialDAOImpl;
 import hu.latzkoo.cookbook.model.Material;
-import hu.latzkoo.cookbook.model.Measure;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -139,6 +138,29 @@ public class MainController implements Initializable {
     @FXML
     public void onExit() {
         Platform.exit();
+    }
+
+    @FXML
+    public void onAbout() {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/about.fxml"));
+
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+
+            stage.setMinWidth(620);
+            stage.setWidth(620);
+            stage.setMinHeight(300);
+            stage.setHeight(400);
+
+            AboutController controller = loader.getController();
+            controller.init(stage);
+
+            showModal(root, stage);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setTableData() {

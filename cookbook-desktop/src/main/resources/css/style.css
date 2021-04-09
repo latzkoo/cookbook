@@ -78,3 +78,18 @@
     -fx-background-insets: 0, 0 0 1 0, 1 1 2 1, 2 2 3 2, 3 3 4 3;
     -fx-text-fill: -fx-text-inner-color;
 }
+.menu-bar {
+    -fx-selection-bar: #007bff ;
+    -fx-focused-text-base-color: white;
+}
+.menu-item:focused {
+    -fx-background-color: #007bff;
+}
+.about-tf {
+    -fx-padding: 15;
+}
+.about-title {
+    -fx-padding: 15 15 0 15;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}

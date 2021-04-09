@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/11"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hu.latzkoo.cookbook.controller.AboutController">
+    <top>
+        <Label styleClass="about-title" alignment="TOP_LEFT" text="Cookbook 1.0" BorderPane.alignment="TOP_LEFT">        </Label>
+    </top>
+    <center>
+       <TextFlow prefHeight="200.0" prefWidth="200.0" styleClass="about-tf" BorderPane.alignment="CENTER">
+           <children>
+               <Text fx:id="about" />
+           </children>
+       </TextFlow>
+   </center>
+</BorderPane>

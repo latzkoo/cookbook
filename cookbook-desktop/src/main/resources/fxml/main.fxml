@@ -15,7 +15,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Súgó">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#onAbout" text="Névjegy" />
             </items>
           </Menu>
         </menus>
