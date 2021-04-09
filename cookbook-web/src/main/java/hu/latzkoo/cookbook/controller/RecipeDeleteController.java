@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/recipes/delete"})
+@WebServlet("/recipes/delete")
 public class RecipeDeleteController extends HttpServlet {
 
     @Override

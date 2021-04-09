@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/prepare/recipe"})
-public class PrepareRecipeController extends HttpServlet {
+@WebServlet("/prepare/recipe")
+public class RecipePrepareController extends HttpServlet {
 
     private final RecipeService recipeService = new RecipeService();
 

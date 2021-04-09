@@ -6,7 +6,7 @@
         <select class="form-control" name="recipeId"
                 id="recipeId" required="required">
             <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-            <c:forEach items="${requestScope.recipes}" var="recipe">
+            <c:forEach items="${recipes}" var="recipe">
                 <option value="<c:out value="${recipe.getId()}"/>"><c:out value="${recipe.getName()}"/></option>
             </c:forEach>
         </select>

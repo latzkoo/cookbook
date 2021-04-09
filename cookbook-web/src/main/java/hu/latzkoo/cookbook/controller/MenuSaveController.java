@@ -18,12 +18,6 @@ import java.util.Arrays;
 @MultipartConfig(fileSizeThreshold = 1048576 * 5, maxFileSize = 1048576 * 5, maxRequestSize = 1048576 * 25)
 public class MenuSaveController extends HttpServlet {
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MenuDAO menuDAO = new MenuDAOImpl();

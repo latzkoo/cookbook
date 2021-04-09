@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                 <c:choose>
-                    <c:when test="${!empty requestScope.outOfStockMaterials}">
+                    <c:when test="${!empty outOfStockMaterials}">
                         <div class="row">
                             <div class="col col-12 px-0">
                                 <div class="alert alert-danger" role="alert">
@@ -30,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${requestScope.outOfStockMaterials}" var="outOfStockMaterial">
+                            <c:forEach items="${outOfStockMaterials}" var="outOfStockMaterial">
                                 <tr class="row">
                                     <td class="col-6">${outOfStockMaterial.getMaterial().getName()}</td>
                                     <td class="col-6"><fmt:formatNumber type="number" pattern="#####.##" value="${outOfStockMaterial.getRequiredUnit()}" />
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <c:choose>
-                            <c:when test="${!empty requestScope.belowMinimumStockMaterials}">
+                            <c:when test="${!empty belowMinimumStockMaterials}">
                                 <div class="row">
                                     <div class="col col-12 px-0">
                                         <div class="alert alert-warning" role="alert">
@@ -66,7 +66,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${requestScope.belowMinimumStockMaterials}" var="belowMinimumStockMaterial">
+                                    <c:forEach items="${belowMinimumStockMaterials}" var="belowMinimumStockMaterial">
                                         <tr class="row">
                                             <td class="col-4">${belowMinimumStockMaterial.getMaterial().getName()}</td>
                                             <td class="col-4"><fmt:formatNumber type="number" pattern="#####.##"

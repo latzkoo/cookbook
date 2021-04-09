@@ -13,12 +13,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/recipes/create", "/recipes/edit"})
 public class RecipeFormController extends HttpServlet {
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Edit

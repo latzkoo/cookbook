@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/recipes", "/recipes/", ""})
+@WebServlet(urlPatterns = {"/recipes", ""})
 public class RecipeListController extends HttpServlet {
 
     @Override

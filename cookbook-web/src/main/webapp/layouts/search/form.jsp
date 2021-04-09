@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../includes/head.jsp" %>
+<%@ include file="/includes/head.jsp" %>
 
 <body class="d-flex flex-column h-100 bg-light">
-<%@ include file="../common/header.jsp" %>
+<%@ include file="/layouts/common/header.jsp" %>
 
     <main role="main" class="flex-shrink-0">
         <section class="content my-5">
@@ -16,6 +16,11 @@
                 <div class="container bg-white rounded shadow-sm p-3">
                     <div class="row">
                         <div class="col-12 bg-dark text-white p-2 font-weight-bolder">Keresés</div>
+                    </div>
+                    <div class="row py-4 border-bottom">
+                        <div class="col-12 px-0">
+                            <span class="font-weight-bolder">Ezzel a keresővel a recepteket és menüket kereshet név, elkészítés nehézsége, kategória és elkészítési idő szerint.</span>
+                        </div>
                     </div>
                     <div class="row pt-3">
                         <div class="col-12 py-2 px-0">
@@ -52,7 +57,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-12">
                                             <div class="label">Kategória</div>
-                                            <c:forEach items="${requestScope.recipeCategories}" var="category" varStatus="status">
+                                            <c:forEach items="${recipeCategories}" var="category" varStatus="status">
                                                 <div class="custom-control categories custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" name="categoryId"
                                                            id="category-${status.index}" value="${category.getId()}">
@@ -77,14 +82,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-12 py-2 px-0">
-                            <div class="form-row">
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row mt-4 p-0 px-md-2 form-buttons">
@@ -100,7 +97,7 @@
         </section>
     </main>
 
-<%@ include file="../common/footer.jsp" %>
-<%@ include file="../../includes/scripts.jsp" %>
+<%@ include file="/layouts/common/footer.jsp" %>
+<%@ include file="/includes/scripts.jsp" %>
 </body>
 </html>

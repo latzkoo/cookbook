@@ -8,41 +8,22 @@
         <section class="content my-5">
             <div class="container m-auto">
                 <div class="row mb-2">
-                    <div class="col-6 p-0"><h3>Keresés</h3></div>
+                    <div class="col-6 p-0"><h3>Alapanyag szerinti keresés</h3></div>
                     <div class="col-6 p-0">
                         <div class="button-add-new">
-                            <a href="${pageContext.request.contextPath}/search"><button class="btn btn-primary btn-sm">‹ Vissza a kereséshez</button></a>
+                            <a href="${pageContext.request.contextPath}/search/stock"><button class="btn btn-primary btn-sm">‹ Vissza a kereséshez</button></a>
                         </div>
                     </div>
                 </div>
 
                 <div class="container bg-white rounded shadow-sm px-0 py-3 mb-3">
                     <div class="row">
-                        <div class="col-6 pl-3">
+                        <div class="col-12 pl-3">
                             <div class="admin-list-items"><span class="font-weight-bolder">Összesen:</span> ${recipes.size() + menus.size()} elem</div>
-                        </div>
-                        <div class="col-6 pt-1 pr-3">
-                            <form name="filter" class="form-inline ml-md-3 mt-md-0"
-                                  action="${pageContext.request.contextPath}/search/results" autocomplete="off">
-                                <input type="hidden" name="name" value="${param.name}" />
-                                <input type="hidden" name="levelId" value="${param.levelId}" />
-                                <input type="hidden" name="durationFrom" value="${param.durationFrom}" />
-                                <input type="hidden" name="durationTo" value="${param.durationTo}" />
-                                <div class="input-group-sm ml-auto">
-                                    Szűrés: <select class="form-control select-filter autosend" name="type" id="type">
-                                        <option value="">Mindent mutat</option>
-                                        <option value="<c:out value="recipes"/>"
-                                                <c:if test="${param.type.equals('recipes')}">selected="selected"</c:if>>Receptek</option>
-                                        <option value="<c:out value="menus"/>"
-                                                <c:if test="${param.type.equals('menus')}">selected="selected"</c:if>>Menük</option>
-                                    </select>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
 
-                <c:if test="${!empty recipes}">
                 <div class="row mt-4 mb-2">
                     <div class="col-6 p-0"><h5>Receptek</h5></div>
                 </div>
@@ -102,63 +83,6 @@
                         </c:choose>
                     </table>
                 </div>
-                </c:if>
-
-                <c:if test="${!empty menus}">
-                <div class="row mt-4 mb-2">
-                    <div class="col-6 p-0"><h5>Menük</h5></div>
-                </div>
-                <div class="container bg-white rounded shadow-sm p-3">
-                    <table class="table table-hover table-sm">
-                        <c:choose>
-                        <c:when test="${!empty menus}">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Megnevezés</th>
-                                <th scope="col">Receptek</th>
-                                <th scope="col">Elkészítési idő</th>
-                                <th scope="col" class="fix150">Hozzáadva</th>
-                                <th scope="col" class="fix150 text-right">Műveletek</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${menus}" var="menu">
-                                <tr>
-                                    <td><a class="link-operation text-secondary"
-                                           href="${pageContext.request.contextPath}/menus/edit?id=<c:out value="${menu.getId()}"/>"><c:out value="${menu.getName()}"/></a></td>
-                                    <td>${menu.getRecipeItems()} db</td>
-                                    <td>${menu.getDuration()} perc</td>
-                                    <td class="fix150">${menu.getCreatedAt()}</td>
-                                    <td>
-                                        <div class="operations">
-                                            <button type="button" class="btn btn-operations-small btn-info ml-1 button-show" title="Megtekintés"
-                                                    data-href="${pageContext.request.contextPath}/menus/show?id=<c:out value="${menu.getId()}"/>">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </c:when>
-                        <c:otherwise>
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Menük</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td class="pt-3">A megadott keresési feltételekkel nem található menü.</td>
-                            </tr>
-                            </tbody>
-                        </c:otherwise>
-                    </c:choose>
-                    </table>
-                </div>
-                </c:if>
             </div>
         </section>
     </main>

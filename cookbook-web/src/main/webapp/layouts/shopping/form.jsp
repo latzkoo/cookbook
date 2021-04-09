@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../includes/head.jsp" %>
+<jsp:useBean id="measures" scope="request" type="java.util.List"/>
+<jsp:useBean id="materials" scope="request" type="java.util.List"/>
+<%@ include file="/includes/head.jsp" %>
 
 <body class="d-flex flex-column h-100 bg-light">
-<%@ include file="../common/header.jsp" %>
+<%@ include file="/layouts/common/header.jsp" %>
 
     <main role="main" class="flex-shrink-0">
         <section class="content my-5">
@@ -46,7 +48,7 @@
                                             <select class="form-control" name="materialId"
                                                     id="shoppingMaterial" required="required">
                                                 <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-                                                <c:forEach items="${requestScope.materials}" var="material">
+                                                <c:forEach items="${materials}" var="material">
                                                     <option value="<c:out value="${material.getId()}"/>"
                                                             data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
                                                             data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
@@ -70,7 +72,7 @@
                                     <select class="form-control" name="measureId"
                                             id="measureId" required="required">
                                         <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-                                        <c:forEach items="${requestScope.measures}" var="measure">
+                                        <c:forEach items="${measures}" var="measure">
                                             <option value="<c:out value="${measure.getId()}"/>"
                                                     data-category="<c:out value="${measure.getCategoryId()}"/>"><c:out value="${measure.getName()}"/></option>
                                         </c:forEach>
@@ -94,7 +96,7 @@
         </section>
     </main>
 
-<%@ include file="../common/footer.jsp" %>
-<%@ include file="../../includes/scripts.jsp" %>
+<%@ include file="/layouts/common/footer.jsp" %>
+<%@ include file="/includes/scripts.jsp" %>
 </body>
 </html>

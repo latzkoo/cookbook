@@ -6,7 +6,7 @@
         <select class="form-control cikkID" name="materialId"
                 id="materialId-" required="required">
             <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-            <c:forEach items="${requestScope.materials}" var="material">
+            <c:forEach items="${materials}" var="material">
                 <option value="<c:out value="${material.getId()}"/>"
                         data-mc="<c:out value="${material.getMeasure().getCategoryId()}"/>"
                         data-mcofficial="<c:out value="${material.getOfficialMeasure().getCategoryId()}"/>"
@@ -26,7 +26,7 @@
         <select class="form-control" name="measureId"
                 id="measureId-" required="required">
             <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-            <c:forEach items="${requestScope.measures}" var="measure">
+            <c:forEach items="${measures}" var="measure">
                 <option value="<c:out value="${measure.getId()}"/>"
                         data-category="<c:out value="${measure.getCategoryId()}"/>">
                     <c:out value="${measure.getName()}"/></option>

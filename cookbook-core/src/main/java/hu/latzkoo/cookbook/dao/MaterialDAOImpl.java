@@ -2,6 +2,7 @@ package hu.latzkoo.cookbook.dao;
 
 import hu.latzkoo.cookbook.config.Config;
 import hu.latzkoo.cookbook.model.Material;
+import hu.latzkoo.cookbook.model.Pager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +18,48 @@ public class MaterialDAOImpl implements MaterialDAO {
     }
 
     @Override
+    public int count(boolean outOfStock, String q) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            ResultSet result;
+            PreparedStatement statement;
+
+            StringBuilder query = new StringBuilder("SELECT count(*) AS count FROM material WHERE 1 ");
+
+            if (outOfStock) {
+                query.append("AND stock < minStock ");
+            }
+
+            if (q != null && !q.isEmpty()) {
+                query.append("AND name LIKE ? ");
+            }
+
+            query.append("ORDER BY name");
+
+            statement = conn.prepareStatement(query.toString());
+
+            if (q != null && !q.isEmpty()) {
+                statement.setString(1, "%" + q + "%");
+            }
+
+            result = statement.executeQuery();
+
+            if (result.next()) {
+                int count = result.getInt("count");
+                statement.close();
+
+                return count;
+            }
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    @Override
     public List<Material> findAll(boolean outOfStock) {
         List<Material> materials = new ArrayList<>();
 
@@ -26,6 +69,58 @@ public class MaterialDAOImpl implements MaterialDAO {
             Statement statement = conn.createStatement();
             ResultSet result = statement.executeQuery("SELECT * FROM material" +
                     (outOfStock ? " WHERE stock < minStock" : "") + " ORDER BY name");
+
+            while(result.next()) {
+                Material material = setMaterial(result);
+                materials.add(material);
+            }
+
+            statement.close();
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return materials;
+    }
+
+    @Override
+    public List<Material> findAll(boolean outOfStock, String q, Pager pager) {
+        List<Material> materials = new ArrayList<>();
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection conn = DriverManager.getConnection(connectionURL);
+            int idx = 1;
+
+            StringBuilder query = new StringBuilder("SELECT * FROM material WHERE 1 ");
+
+            if (outOfStock) {
+                query.append("AND stock < minStock ");
+            }
+
+            if (q != null && !q.isEmpty()) {
+                query.append("AND name LIKE ? ");
+            }
+
+            query.append("ORDER BY name");
+
+            if (pager != null) {
+                query.append(" LIMIT ?, ?");
+            }
+
+            PreparedStatement statement = conn.prepareStatement(query.toString());
+
+            if (q != null && !q.isEmpty()) {
+                statement.setString(idx++, "%" + q + "%");
+            }
+
+            if (pager != null) {
+                statement.setInt(idx++, pager.getFrom());
+                statement.setInt(idx, pager.getItems());
+            }
+
+            ResultSet result = statement.executeQuery();
 
             while(result.next()) {
                 Material material = setMaterial(result);

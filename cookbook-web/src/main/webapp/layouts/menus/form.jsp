@@ -1,18 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../includes/head.jsp" %>
+<%@ include file="/includes/head.jsp" %>
 
 <body class="d-flex flex-column h-100 bg-light">
-<%@ include file="../common/header.jsp" %>
+<%@ include file="/layouts/common/header.jsp" %>
 
     <main role="main" class="flex-shrink-0">
         <section class="content my-5">
             <div class="container m-auto">
                 <div class="row">
                     <div class="col-12 p-0"><h3><a href="${pageContext.request.contextPath}/menus">Menük</a> ›
-                        <span class="small"><c:choose><c:when test="${!empty requestScope.content}">módosítás</c:when><c:otherwise>új hozzáadása</c:otherwise></c:choose></span></h3></div>
+                        <span class="small"><c:choose><c:when test="${!empty content}">módosítás</c:when><c:otherwise>új hozzáadása</c:otherwise></c:choose></span></h3></div>
                 </div>
 
-                <form action="${pageContext.request.contextPath}/menus/<c:choose><c:when test="${!empty requestScope.content}">update?id=${requestScope.content.getId()}</c:when><c:otherwise>add</c:otherwise></c:choose>"
+                <form action="${pageContext.request.contextPath}/menus/<c:choose><c:when test="${!empty content}">update?id=${content.getId()}</c:when><c:otherwise>add</c:otherwise></c:choose>"
                       method="post" enctype="multipart/form-data" autocomplete="off">
                 <div class="container bg-white rounded shadow-sm p-3">
                     <div class="row">
@@ -27,7 +27,7 @@
                                         <div class="form-group col-12">
                                             <label for="name">Menü neve</label>
                                             <input type="text" class="form-control" id="name" name="name" required="required"
-                                                   value="<c:if test="${!empty requestScope.content}">${requestScope.content.getName()}</c:if>" />
+                                                   value="<c:if test="${!empty content}">${content.getName()}</c:if>" />
                                         </div>
                                     </div>
                                 </div>
@@ -38,7 +38,7 @@
                                             <label for="duration">Elkészítési idő (perc)</label>
                                             <input type="number" class="form-control numeric" id="duration"
                                                    name="duration" required="required"
-                                                   value="<c:if test="${!empty requestScope.content}">${requestScope.content.getDuration()}</c:if>" />
+                                                   value="<c:if test="${!empty content}">${content.getDuration()}</c:if>" />
                                         </div>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                                             <label for="numberOfPersons">Adag (fő)</label>
                                             <input type="number" class="form-control numeric" id="numberOfPersons"
                                                    name="numberOfPersons" required="required"
-                                                   value="<c:if test="${!empty requestScope.content}">${requestScope.content.getNumberOfPersons()}</c:if>" />
+                                                   value="<c:if test="${!empty content}">${content.getNumberOfPersons()}</c:if>" />
                                         </div>
                                     </div>
                                 </div>
@@ -65,17 +65,17 @@
                     <div class="row pt-3">
                         <div class="col-12 py-2 px-0">
                             <c:choose>
-                                <c:when test="${!empty requestScope.content.getRecipes()}">
-                                    <c:forEach items="${requestScope.content.getRecipes()}" var="item" varStatus="status">
+                                <c:when test="${!empty content.getRecipes()}">
+                                    <c:forEach items="${content.getRecipes()}" var="item" varStatus="status">
                                     <div class="form-row row-item">
                                         <div class="form-group col-md-<c:out value="${status.index > 0 ? 11 : 12}" /> px-2">
                                             <label for="recipeId-${status.index}">Recept</label>
                                             <select class="form-control" name="recipeId"
                                                     id="recipeId-${status.index}" required="required">
-                                                <c:if test="${empty requestScope.content}">
+                                                <c:if test="${empty content}">
                                                     <option value="" disabled="disabled" selected="selected">Válasszon!</option>
                                                 </c:if>
-                                                <c:forEach items="${requestScope.recipes}" var="recipe">
+                                                <c:forEach items="${recipes}" var="recipe">
                                                 <option value="<c:out value="${recipe.getId()}"/>"
                                                     <c:if test="${item.getId() == recipe.getId()}">
                                                         selected="selected"</c:if>><c:out value="${recipe.getName()}"/></option>
@@ -101,7 +101,7 @@
                                             <select class="form-control" name="recipeId"
                                                     id="recipeId-0" required="required">
                                                 <option value="" disabled="disabled" selected="selected">Válasszon!</option>
-                                                <c:forEach items="${requestScope.recipes}" var="recipe">
+                                                <c:forEach items="${recipes}" var="recipe">
                                                     <option value="<c:out value="${recipe.getId()}"/>"><c:out value="${recipe.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
@@ -122,7 +122,7 @@
                 <div class="row mt-4 p-0 px-md-2 form-buttons">
                     <div class="col-6 col-md-3 col-lg-2 p-0 pr-2 px-md-2">
                         <button type="submit" class="btn btn-primary form-main-button btn-block px-4">
-                            <c:choose><c:when test="${!empty requestScope.content}">Módosítás</c:when><c:otherwise>Hozzáadás</c:otherwise> </c:choose></button>
+                            <c:choose><c:when test="${!empty content}">Módosítás</c:when><c:otherwise>Hozzáadás</c:otherwise> </c:choose></button>
                     </div>
                     <div class="col-6 col-md-3 col-lg-2 p-0 pl-2 px-md-2">
                         <a href="${pageContext.request.contextPath}/menus">
@@ -135,7 +135,7 @@
         </section>
     </main>
 
-<%@ include file="../common/footer.jsp" %>
-<%@ include file="../../includes/scripts.jsp" %>
+<%@ include file="/layouts/common/footer.jsp" %>
+<%@ include file="/includes/scripts.jsp" %>
 </body>
 </html>

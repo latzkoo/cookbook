@@ -8,15 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/search/", "/search"})
-public class SearchFormController extends HttpServlet {
+@WebServlet("/search")
+public class SearchSimpleFormController extends HttpServlet {
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RecipeCategoryDAO recipeCategoryDAO = new RecipeCategoryDAOImpl();

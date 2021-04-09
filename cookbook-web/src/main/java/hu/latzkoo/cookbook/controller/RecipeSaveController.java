@@ -27,12 +27,6 @@ import java.util.List;
 @MultipartConfig(fileSizeThreshold = 1048576 * 5, maxFileSize = 1048576 * 5, maxRequestSize = 1048576 * 25)
 public class RecipeSaveController extends HttpServlet {
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RecipeDAO recipeDAO = new RecipeDAOImpl();

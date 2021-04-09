@@ -13,12 +13,6 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/menus/create", "/menus/edit"})
 public class MenuFormController extends HttpServlet {
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Edit

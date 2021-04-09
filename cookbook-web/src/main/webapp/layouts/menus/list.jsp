@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="../../includes/head.jsp" %>
+<%@ include file="/includes/head.jsp" %>
 
 <body class="d-flex flex-column h-100 bg-light">
-<%@ include file="../common/header.jsp" %>
+<%@ include file="/layouts/common/header.jsp" %>
 
     <main role="main" class="flex-shrink-0">
         <section class="content my-5">
@@ -71,7 +71,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${requestScope.menus}" var="menu">
+                        <c:forEach items="${menus}" var="menu">
                         <tr>
                             <td><a class="link-operation text-secondary"
                             href="${pageContext.request.contextPath}/menus/edit?id=<c:out value="${menu.getId()}"/>"><c:out value="${menu.getName()}"/></a></td>
@@ -107,7 +107,7 @@
                         </tbody>
                     </table>
                 </div>
-                <%@ include file="../common/pager.jsp" %>
+                <%@ include file="/layouts/common/pager.jsp" %>
             </div>
         </section>
     </main>
@@ -133,7 +133,7 @@
         </div>
     </div>
 
-<%@ include file="../common/footer.jsp" %>
-<%@ include file="../../includes/scripts.jsp" %>
+<%@ include file="/layouts/common/footer.jsp" %>
+<%@ include file="/includes/scripts.jsp" %>
 </body>
 </html>

@@ -14,18 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/shopping/remove/", "/shopping/remove"})
+@WebServlet("/shopping/remove")
 public class ShoppingRemoveController extends HttpServlet {
 
     private final MaterialDAO materialDAO = new MaterialDAOImpl();
     private final MeasureDAO measureDAO = new MeasureDAOImpl();
 
-    /**
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!request.getParameter("materialId").isEmpty() && !request.getParameter("qty").isEmpty() &&

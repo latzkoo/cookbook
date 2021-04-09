@@ -11,6 +11,7 @@ import hu.latzkoo.cookbook.model.RecipeMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RecipeService {
 
@@ -19,10 +20,6 @@ public class RecipeService {
     private final MeasureDAO measureDAO = new MeasureDAOImpl();
 
     public RecipeService() {
-    }
-
-    public RecipeService(Recipe recipe) {
-        this.recipe = recipe;
     }
 
     public Recipe getRecipe() {
@@ -63,6 +60,21 @@ public class RecipeService {
         }
 
         return outOfStockMaterials;
+    }
+
+    /**
+     * Check the recipes are can be prepared.
+     *
+     * @param recipes the list of the recipes that have to check.
+     * @param numberOfPersons the number of persons to prepare the recipe.
+     * @return the list of recipes that can be prepare.
+     */
+    public List<Recipe> canPrepare(List<Recipe> recipes, int numberOfPersons) {
+        return recipes.stream().filter(recipe -> {
+            setRecipe(recipe);
+            List<RecipeMaterial> outOfStockMaterials = canPrepare(numberOfPersons);
+            return outOfStockMaterials.isEmpty();
+        }).collect(Collectors.toList());
     }
 
     /**

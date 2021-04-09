@@ -161,7 +161,7 @@ public class RecipeDAOImpl implements RecipeDAO {
             Connection conn = DriverManager.getConnection(connectionURL);
             int idx = 1;
 
-            StringBuilder query = new StringBuilder("SELECT r.id, r.name, r.createdAt, " +
+            StringBuilder query = new StringBuilder("SELECT r.id, r.name, r.numberOfPersons, r.duration, r.createdAt, " +
                     "(SELECT count(rm.materialId) FROM recipe_material AS rm WHERE recipeId=r.id) AS materials " +
                     "FROM recipe AS r");
 
@@ -190,8 +190,12 @@ public class RecipeDAOImpl implements RecipeDAO {
                 Recipe recipe = new Recipe();
                 recipe.setId(result.getInt("id"));
                 recipe.setName(result.getString("name"));
+                recipe.setDuration(result.getInt("duration"));
+                recipe.setNumberOfPersons(result.getInt("numberOfPersons"));
                 recipe.setMaterialItems(result.getInt("materials"));
                 recipe.setCreatedAt(result.getString("createdAt"));
+
+                recipe.setMaterials(recipeMaterialDAO.findAll(recipe.getId()));
 
                 recipes.add(recipe);
             }

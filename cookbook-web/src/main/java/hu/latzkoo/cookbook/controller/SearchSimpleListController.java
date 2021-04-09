@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/search/results/", "/search/results"})
-public class SearchListController extends HttpServlet {
+@WebServlet("/search/results")
+public class SearchSimpleListController extends HttpServlet {
 
     private final RecipeDAO recipeDAO = new RecipeDAOImpl();
     private final MenuDAO menuDAO = new MenuDAOImpl();
