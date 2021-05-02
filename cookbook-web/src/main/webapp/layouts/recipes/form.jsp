@@ -27,6 +27,9 @@
                                             <label for="name">Étel neve</label>
                                             <input type="text" class="form-control" id="name" name="name" required="required"
                                                    value="<c:if test="${!empty content}">${content.getName()}</c:if>" />
+                                            <c:if test="${sessionScope.errors.containsKey('name')}">
+                                                <span class="error">${sessionScope.errors.get('name')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -61,6 +64,9 @@
                                                             selected="selected"</c:if>><c:out value="${category.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('categoryId')}">
+                                                <span class="error">${sessionScope.errors.get('categoryId')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -79,6 +85,9 @@
                                                                 selected="selected"</c:if>><c:out value="${level.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('levelId')}">
+                                                <span class="error">${sessionScope.errors.get('levelId')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -90,6 +99,9 @@
                                             <input type="number" class="form-control numeric" id="duration"
                                                    name="duration" required="required"
                                                    value="<c:if test="${!empty content}">${content.getDuration()}</c:if>" />
+                                            <c:if test="${sessionScope.errors.containsKey('duration')}">
+                                                <span class="error">${sessionScope.errors.get('duration')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -101,6 +113,9 @@
                                             <input type="number" class="form-control numeric" id="numberOfPersons"
                                                    name="numberOfPersons" required="required"
                                                    value="<c:if test="${!empty content}">${content.getNumberOfPersons()}</c:if>" />
+                                            <c:if test="${sessionScope.errors.containsKey('numberOfPersons')}">
+                                                <span class="error">${sessionScope.errors.get('numberOfPersons')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -185,11 +200,17 @@
                                                         selected="selected"</c:if>><c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('materialId')}">
+                                                <span class="error">${sessionScope.errors.get('materialId')}</span>
+                                            </c:if>
                                         </div>
                                         <div class="form-group col-md-3 px-2">
                                             <label for="unit-${status.index}">Mennyiség</label>
                                             <input type="number" class="form-control numeric" id="unit-${status.index}"
                                                    name="unit" required="required" value="${item.getUnit()}" min="1" />
+                                            <c:if test="${sessionScope.errors.containsKey('unit')}">
+                                                <span class="error">${sessionScope.errors.get('unit')}</span>
+                                            </c:if>
                                         </div>
                                         <div class="form-group col-md-<c:out value="${status.index > 0 ? 2 : 3}" /> px-2">
                                             <label for="measureId-${status.index}">Mennyiségi egység</label>
@@ -203,6 +224,9 @@
                                                                 selected="selected"</c:if>><c:out value="${measure.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('measureId')}">
+                                                <span class="error">${sessionScope.errors.get('measureId')}</span>
+                                            </c:if>
                                         </div>
                                         <c:if test="${status.index > 0}">
                                         <div class="form-group col-md-1 px-2">
@@ -232,11 +256,17 @@
                                                         <c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('materialId')}">
+                                                <span class="error">${sessionScope.errors.get('materialId')}</span>
+                                            </c:if>
                                         </div>
                                         <div class="form-group col-md-3 px-2">
                                             <label for="unit-${status.index}">Mennyiség</label>
                                             <input type="number" class="form-control numeric" id="unit-${status.index}"
                                                    name="unit" required="required" value="${item.getUnit()}" min="1" />
+                                            <c:if test="${sessionScope.errors.containsKey('unit')}">
+                                                <span class="error">${sessionScope.errors.get('unit')}</span>
+                                            </c:if>
                                         </div>
                                         <div class="form-group col-md-3 px-2">
                                             <label for="measureId-${status.index}">Mennyiségi egység</label>
@@ -248,6 +278,9 @@
                                                             data-category="<c:out value="${measure.getCategoryId()}"/>"><c:out value="${measure.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('measureId')}">
+                                                <span class="error">${sessionScope.errors.get('measureId')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </c:otherwise>

@@ -15,6 +15,10 @@ public class MenuFormController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("error") == null) {
+            request.getSession().removeAttribute("errors");
+        }
+
         // Edit
         if (request.getParameter("id") != null) {
             int id = Integer.parseInt(request.getParameter("id"));

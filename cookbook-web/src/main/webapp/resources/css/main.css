@@ -141,3 +141,10 @@ label {
 .select-stock {
     margin: 0 15px 0 5px;
 }
+
+.error {
+    float: left;
+    width: 100%;
+    color: #b21f2d;
+    margin-top: 5px;
+}

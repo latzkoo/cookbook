@@ -57,6 +57,9 @@
                                                         <c:out value="${material.getName()}"/></option>
                                                 </c:forEach>
                                             </select>
+                                            <c:if test="${sessionScope.errors.containsKey('materialId')}">
+                                                <span class="error">${sessionScope.errors.get('materialId')}</span>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
@@ -65,6 +68,9 @@
                                     <label for="qty">Mennyiség</label>
                                     <input type="number" class="form-control numeric" id="qty"
                                            name="qty" required="required" value="" min="1" />
+                                    <c:if test="${sessionScope.errors.containsKey('qty')}">
+                                        <span class="error">${sessionScope.errors.get('qty')}</span>
+                                    </c:if>
                                 </div>
 
                                 <div class="form-group col-md-3 px-2">
@@ -77,6 +83,9 @@
                                                     data-category="<c:out value="${measure.getCategoryId()}"/>"><c:out value="${measure.getName()}"/></option>
                                         </c:forEach>
                                     </select>
+                                    <c:if test="${sessionScope.errors.containsKey('measureId')}">
+                                        <span class="error">${sessionScope.errors.get('measureId')}</span>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>

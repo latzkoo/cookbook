@@ -18,10 +18,7 @@ public class MaterialListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MaterialDAO materialDAO = new MaterialDAOImpl();
 
-        boolean outOfStock = false;
-        if (request.getParameter("status") != null && request.getParameter("status").equals("outOfStock")) {
-            outOfStock = true;
-        }
+        boolean outOfStock = request.getParameter("status") != null && request.getParameter("status").equals("outOfStock");
 
         int count = materialDAO.count(outOfStock, request.getParameter("q"));
         request.setAttribute("count", count);

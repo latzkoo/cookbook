@@ -3,6 +3,7 @@ package hu.latzkoo.cookbook.controller;
 import hu.latzkoo.cookbook.dao.*;
 import hu.latzkoo.cookbook.model.Material;
 import hu.latzkoo.cookbook.model.Measure;
+import hu.latzkoo.cookbook.model.Validation;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +20,10 @@ public class ShoppingController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("error") == null) {
+            request.getSession().removeAttribute("errors");
+        }
+
         request.setAttribute("materials", materialDAO.findAll(false));
         request.setAttribute("measures", measureDAO.findAll());
 
@@ -27,8 +32,14 @@ public class ShoppingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!request.getParameter("materialId").isEmpty() && !request.getParameter("qty").isEmpty() &&
-                !request.getParameter("measureId").isEmpty()) {
+        Validation validation = new Validation(request, new String[]{"materialId", "qty", "measureId"});
+
+        if (validation.getErrors().size() > 0) {
+            request.getSession().setAttribute("errors", validation.getErrors());
+            String page = request.getParameter("id") != null ? "?id=" + request.getParameter("id") + "&error" : "?error";
+            response.sendRedirect(request.getContextPath() + "/shopping" + page);
+        }
+        else {
             int materialId = Integer.parseInt(request.getParameter("materialId"));
             int measureId = Integer.parseInt(request.getParameter("measureId"));
             int qty = Integer.parseInt(request.getParameter("qty"));
